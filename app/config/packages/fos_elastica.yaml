@@ -1,0 +1,15 @@
+# Read the documentation: https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/doc/setup.md
+fos_elastica:
+    clients:
+        default: { url: '%env(ELASTICSEARCH_URL)%' }
+    indexes:
+        app:
+            persistence:
+                driver: mongodb
+                finder: ~
+                listener: ~
+                model: App\Document\Episode
+                provider: ~
+            serializer:
+                groups: ["episode:elastic"]
+    serializer: ~

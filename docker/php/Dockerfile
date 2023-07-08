@@ -1,0 +1,40 @@
+FROM php:8.2-fpm as app
+
+ENV OPCACHE_VALIDATE_TIMESTAMPS=0
+
+ARG MONGODB_VERSION=1.15.1
+
+RUN apt update \
+    && apt install -y zlib1g-dev g++ git libicu-dev zip libzip-dev zip libcurl4-openssl-dev pkg-config libssl-dev \
+    && docker-php-ext-install intl opcache pdo pdo_mysql \
+    && pecl install apcu \
+    && docker-php-ext-enable apcu \
+    && docker-php-ext-configure zip \
+    && docker-php-ext-install zip \
+    && pecl install mongodb-${MONGODB_VERSION} \
+    && docker-php-ext-enable mongodb \
+    && pecl clear-cache \
+    && docker-php-ext-enable opcache;
+
+# Use the default production configuration
+RUN ln -s ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini \
+    && sed -i -e "s/^ *memory_limit.*/memory_limit = 512M/g"  ${PHP_INI_DIR}/php.ini
+
+COPY docker/php/conf.d/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
+
+# Copy default settings
+COPY docker/php/conf.d/tvwatchlist.ini ${PHP_INI_DIR}/conf.d/tvwatchlist.ini
+
+CMD ["php-fpm"]
+
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
+COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
+
+RUN set -xe; \
+    mkdir ~/.composer;
+
+COPY docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/docker-entrypoint
+
+ENTRYPOINT ["docker-entrypoint"]

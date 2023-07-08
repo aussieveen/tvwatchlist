@@ -1,0 +1,49 @@
+version: '3.7'
+
+services:
+  app:
+    image: tvwatchlist-app:local
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    environment:
+      OPCACHE_VALIDATE_TIMESTAMPS: 1
+    depends_on:
+      - database
+    volumes:
+      - ./app:/var/www/html:rw,cached
+  nginx:
+    container_name: nginx
+    image: nginx:stable-alpine
+    ports:
+      - '10000:80'
+    volumes:
+      - ./app/public:/var/www/html/public
+      - ./docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+      - database
+  database:
+    container_name: database
+    image: mongo:4.4
+    environment:
+      MONGO_INITDB_DATABASE: api
+      MONGO_INITDB_ROOT_USERNAME: api
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/mongodb/data:rw
+  elasticsearch:
+    container_name: elasticsearch
+    image: elasticsearch:local
+    build:
+      context: .
+      dockerfile: ./docker/elasticsearch/Dockerfile
+    environment:
+      discovery.type: single-node
+    ports:
+      - 127.0.0.1:9200:9200
+    volumes:
+      - es_data:/data/elasticsearch:rw
+volumes:
+  db_data: {}
+  es_data: {}

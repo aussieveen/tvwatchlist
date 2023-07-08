@@ -1,0 +1,59 @@
+@import "~bootstrap/scss/bootstrap";
+
+// Source mixin
+@mixin make-container($padding-x: $container-padding-x) {
+  width: 100%;
+  max-width:540px;
+  padding-right: $padding-x;
+  padding-left: $padding-x;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@mixin img-container($padding-x: $container-padding-x) {
+  width: 100%;
+  max-width:175px;
+  padding-right: $padding-x;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 10px;
+  float:left;
+}
+
+// Usage
+.custom-container {
+  @include make-container();
+}
+
+.poster-container {
+  @include img-container();
+}
+
+body{
+  background-color: #16171a;
+  //color: #6d6f78;
+  color:lightgrey;
+  img{
+    border:5px solid lightcyan;
+  }
+  .component{
+    margin-bottom:5px;
+  }
+  #primary{
+    float:left;
+  }
+  #showDescription{
+    visibility:hidden;
+  }
+  #episodeDetails{
+    float:right;
+    text-align: right;
+    margin-bottom:0;
+  }
+  #episodeHeader{
+    min-height:55px;
+  }
+  .btn{
+    width:100%;
+  }
+}
