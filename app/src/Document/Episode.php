@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new ODM\Index(
             keys: ['showTitle' => 'asc', 'season' => 'asc', 'episode' => 'asc'],
             unique: true
-        ),
+        )
     ]
 )]
 #[ODM\HasLifecycleCallbacks]
@@ -31,7 +31,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 class Episode
 {
-    final const VALID_STATUSES = ['upcoming', 'airing', 'finished'];
+    public final const VALID_STATUSES = [
+        1 => 'airing', 2 => 'finished', 3 => 'upcoming'
+    ];
     final const AVAILABLE_PLATFORMS = ['Plex','Netflix','Disney Plus','Amazon Prime'];
 
     #[Groups(['episode:read', 'identifier'])]

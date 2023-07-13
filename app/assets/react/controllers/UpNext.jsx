@@ -17,23 +17,23 @@ export default function UpNext() {
                 "Content-Type": "application/json+ld"
             }
         })
-            .then((response) => {
-                if(!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                return response.json();
-            })
-            .then((episodeData) => {
-                setEpisodeData(episodeData);
-                setError(null);
-            })
-            .catch((err) => {
-                setError(err.message);
-                setEpisodeData(null);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
+        .then((response) => {
+            if(!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        })
+        .then((episodeData) => {
+            setEpisodeData(episodeData);
+            setError(null);
+        })
+        .catch((err) => {
+            setError(err.message);
+            setEpisodeData(null);
+        })
+        .finally(() => {
+            setLoading(false);
+        });
     }
 
     useEffect(() => { refreshState(); }, []);

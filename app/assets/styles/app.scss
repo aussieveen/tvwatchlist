@@ -46,8 +46,6 @@ body{
     visibility:hidden;
   }
   #episodeDetails{
-    float:right;
-    text-align: right;
     margin-bottom:0;
   }
   #episodeHeader{
@@ -56,4 +54,85 @@ body{
   .btn{
     width:100%;
   }
+  input{
+    width:100%;
+  }
+  .ingestCard{
+    width:100%;
+    float:left;
+    margin:10px 0;
+    h3{
+      text-align:center;
+      margin-bottom:10px;
+    }
+    .Collapsible {
+      background-color: white;
+      float:left;
+    }
+
+    .Collapsible__contentInner {
+      padding: 10px;
+      border: 1px solid #ebebeb;
+      border-top: 0; }
+    .Collapsible__contentInner p {
+      margin-bottom: 10px;
+      font-size: 14px;
+      line-height: 20px; }
+    .Collapsible__contentInner p:last-child {
+      margin-bottom: 0; }
+    .Collapsible__trigger {
+      display: block;
+      font-weight: 400;
+      text-decoration: none;
+      color: #333333;
+      position: relative;
+      border: 1px solid white;
+      padding: 10px;
+      background: #1e2334;
+      color: white;
+      text-align:center;
+    }
+    .Collapsible__trigger.is-disabled {
+      opacity: 0.5;
+      background-color: grey; }
+    .CustomTriggerCSS {
+      background-color: lightcoral;
+      transition: background-color 200ms ease; }
+    .CustomTriggerCSS--open {
+      background-color: darkslateblue; }
+    .Collapsible__custom-sibling {
+      padding: 5px;
+      font-size: 12px;
+      background-color: #CBB700;
+      color: black; }
+    .partialIngestInput{
+      width:45%;
+      float:left;
+      margin-left:1%;
+      margin-right:4%;
+      margin-bottom:10px;
+      label{
+        display: inline-block;
+        text-align: right;
+        float: left;
+        font-size: 1.3em;
+        color:black;
+        margin-right: 5px;
+      }
+      input{
+        width:60%;
+      }
+    }
+    .ingestForm{
+      width:100%;
+      float:left;
+      margin-bottom:10px;
+      .platformSelect{
+        width:100%;
+        float:left;
+        margin-bottom:10px;
+      }
+    }
+  }
+
 }

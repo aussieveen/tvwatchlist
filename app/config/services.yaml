@@ -19,8 +19,23 @@ services:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'
-            - '../src/Entity/'
             - '../src/Kernel.php'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    App\Entity\Tvdb\Api\ApiQuery\ShowTitle:
+        factory: ['@App\Entity\Tvdb\Api\ApiQuery\ShowTitleFactory', 'build' ]
+
+    App\Entity\Tvdb\Data\Ingest\Criteria:
+        factory: [ '@App\Entity\Tvdb\Data\Ingest\CriteriaFactory', 'build' ]
+
+    App\Swagger\SwaggerDecorator:
+        decorates: 'api_platform.openapi.normalizer'
+        arguments:
+          [
+              '@App\Swagger\SwaggerDecorator.inner',
+              '%kernel.project_dir%/config/services/swagger.yaml',
+          ]
+        autoconfigure: false
+        calls:
+            - setContainer: [ '@service_container' ]
+
+    Symfony\Component\Yaml\Parser: ~
