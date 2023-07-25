@@ -28,20 +28,26 @@ readonly class IngestProcess
         if ($series['status'] !== 'success') {
             throw new RuntimeException('Series not found');
         }
+
         try{
             foreach ($series['data']['seasons'] as $seasonData) {
                 if ($seasonData['type']['id'] !== 1 || $seasonData['number'] < $criteria->season) {
                     continue;
                 }
+
                 $seasonResponse = $this->tvdbClient->seasonExtended($seasonData['id']);
+
                 $season = json_decode($seasonResponse->getContent(), true);
+
                 if ($season['status'] !== 'success') {
                     throw new RuntimeException('Episodes not found');
                 }
+
                 foreach ($season['data']['episodes'] as $episodeData) {
                     if ($episodeData['seasonNumber'] === $criteria->season && $episodeData['number'] < $criteria->episode) {
                         continue;
                     }
+
                     $episode = $this->episodeFactory->build(
                         $episodeData['name'],
                         $episodeData['overview'],

@@ -27,19 +27,19 @@ class FindShow extends AbstractController
         $searchResults = $this->tvdbClient->search($this->apiQuery->showTitle);
         try {
             $body = json_decode($searchResults->getContent(), true);
-            if($body['status'] !== 'success') {
+            if ($body['status'] !== 'success') {
                 throw new Exception('Something went wrong');
             }
             $shows = [];
-            foreach($body['data'] as $show) {
+            foreach ($body['data'] as $show) {
                 $shows[] = $this->showFactory->create($show);
             }
+
             return new JsonResponse([
                 'status' => 200,
                 'title' => 'OK',
                 'data' => array_values(array_filter($shows))
             ]);
-
         } catch (Exception $e) {
             return new JsonResponse([
                 'message' => $e->getMessage(),

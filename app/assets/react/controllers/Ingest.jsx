@@ -1,7 +1,6 @@
 import React from "react";
 import Collapsible from 'react-collapsible';
 import { useState, useEffect } from "react";
-import Poster from "../components/ShowPoster";
 import ShowPoster from "../components/ShowPoster";
 import IngestForm from "../components/IngestForm";
 
@@ -13,9 +12,7 @@ export default function Ingest() {
     const [timer, setTimer] = useState(0)
 
     const handleChange = event => {
-        console.log("EVENT.TARGET.VALUE " + event.target.value);
         setInputValue(event.target.value)
-        console.log("INPUT VALUE " + inputValue);
         clearTimeout(timer)
 
         const newTimer = setTimeout(() => {

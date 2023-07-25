@@ -27,6 +27,7 @@ class IngestRequest extends AbstractController
         $this->ingestProcess->ingest(
             $this->criteria
         );
+
         return new JsonResponse([
             'message' => sprintf(
                 'Processing started for series: %s from Season: %d, Episode:%d',

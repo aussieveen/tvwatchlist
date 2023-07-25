@@ -3,22 +3,29 @@ import React from 'react'
 export default function WatchedButton({id, refreshState}) {
     const handleClick = () => {
         fetch('http://localhost:10000/api/episodes/' + id, {
-            method: "PUT",
+            method: "PATCH",
             headers: {
-                "Content-Type": "application/json+ld"
+                "Content-Type": "application/merge-patch+json"
             },
             body: JSON.stringify({
                 watched: true
             })
         })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            console.log(response);
+        })
         .finally(() => {
-            {refreshState()}
+            console.log("Finally");
+            {refreshState(id + 1)}
         });
     };
 
     return (
         <div className="component text-center" id="watched">
-            <button class="btn btn-lg btn-block btn-success" type="button" onClick={handleClick}>
+            <button className="btn btn-lg btn-block btn-success" type="button" onClick={handleClick}>
                 Watched
             </button>
         </div>
