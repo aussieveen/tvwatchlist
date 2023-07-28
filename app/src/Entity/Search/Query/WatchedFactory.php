@@ -6,6 +6,6 @@ readonly class WatchedFactory
 {
     public function build(): Watched
     {
-        return new Watched(true);
+        return new Watched(false);
     }
 }

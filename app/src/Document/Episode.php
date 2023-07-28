@@ -27,7 +27,8 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     denormalizationContext: [
         'groups' => ['episode:write']
-    ]
+    ],
+    order: ['airDate' => 'ASC']
 )]
 class Episode
 {
@@ -36,11 +37,11 @@ class Episode
     ];
     final const AVAILABLE_PLATFORMS = ['Plex','Netflix','Disney Plus','Amazon Prime'];
 
-    #[Groups(['episode:read', 'identifier'])]
+    #[Groups(['episode:read', 'history:read', 'identifier'])]
     #[ODM\Id(type: 'integer', strategy: 'INCREMENT')]
     private int $id;
 
-    #[Groups(['episode:read','episode:write','episode:elastic'])]
+    #[Groups(['episode:read','episode:write','episode:elastic', 'history:read'])]
     #[ODM\Field(type: 'string')]
     #[Assert\NotBlank]
     public string $title;
@@ -60,7 +61,7 @@ class Episode
     #[Assert\NotBlank]
     public int $episode;
 
-    #[Groups(['episode:read', 'episode:write', 'episode:elastic'])]
+    #[Groups(['episode:read', 'episode:write','episode:elastic'])]
     #[ODM\Field(type: 'string')]
     #[Assert\NotBlank]
     public string $showTitle;

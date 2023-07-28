@@ -10,8 +10,8 @@ export default function UpNext() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    function refreshState(id = 1) {
-        fetch(`http://localhost:10000/api/episodes/` + id, {
+    function refreshState() {
+        fetch(`http://localhost:10000/api/nextup`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json+ld"
@@ -25,7 +25,7 @@ export default function UpNext() {
             return response.json();
         })
         .then((episodeData) => {
-            setEpisodeData(episodeData);
+            setEpisodeData(episodeData[0]);
             setError(null);
         })
         .catch((err) => {

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Document;
+namespace App\Factory;
 
+use App\Document\Episode;
 use DateTimeInterface;
 
 class EpisodeFactory

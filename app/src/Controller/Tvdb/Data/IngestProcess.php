@@ -4,8 +4,8 @@ namespace App\Controller\Tvdb\Data;
 
 use App\Api\TvdbClient;
 use App\Document\Episode;
-use App\Document\EpisodeFactory;
 use App\Entity\Tvdb\Data\Ingest\Criteria;
+use App\Factory\EpisodeFactory;
 use DateTimeImmutable;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Exception;

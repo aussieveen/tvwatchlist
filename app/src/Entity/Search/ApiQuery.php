@@ -7,7 +7,7 @@ use App\Entity\Search\Query\Watched;
 readonly class ApiQuery
 {
     public function __construct(
-        Watched $watched
+        public Watched $watched
     )
     {
     }

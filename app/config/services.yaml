@@ -21,6 +21,9 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Kernel.php'
 
+    App\Entity\Search\Query\Watched:
+        factory: ['@App\Entity\Search\Query\WatchedFactory', 'build' ]
+
     App\Entity\Tvdb\Api\ApiQuery\ShowTitle:
         factory: ['@App\Entity\Tvdb\Api\ApiQuery\ShowTitleFactory', 'build' ]
 
@@ -39,3 +42,6 @@ services:
             - setContainer: [ '@service_container' ]
 
     Symfony\Component\Yaml\Parser: ~
+
+    FOS\ElasticaBundle\Finder\PaginatedFinderInterface:
+        alias: fos_elastica.finder.app

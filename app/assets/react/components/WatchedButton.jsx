@@ -1,8 +1,9 @@
 import React from 'react'
 
 export default function WatchedButton({id, refreshState}) {
+    const delay = (ms = 1000) => new Promise(r => setTimeout(r, ms));
     const handleClick = () => {
-        fetch('http://localhost:10000/api/episodes/' + id, {
+        const watchedEpisode = fetch('http://localhost:10000/api/episodes/' + id, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/merge-patch+json"
@@ -15,11 +16,26 @@ export default function WatchedButton({id, refreshState}) {
             if (!response.ok) {
                 throw new Error("Network response was not ok");
             }
-            console.log(response);
-        })
-        .finally(() => {
-            console.log("Finally");
-            {refreshState(id + 1)}
+            return response.json();
+        });
+
+        watchedEpisode.then(episode => {
+            const dateObject = new Date();
+            let date = dateObject.toUTCString();
+            return fetch('http://localhost:10000/api/histories', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    showTitle: episode.showTitle,
+                    episodeTitle: episode.title,
+                    airDate: episode.airDate,
+                    watchedAt: date
+                })
+            });
+        }).finally(() => {
+            setTimeout(() => {refreshState()}, 1500);
         });
     };
 
