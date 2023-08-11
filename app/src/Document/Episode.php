@@ -41,7 +41,7 @@ class Episode
     #[ODM\Id(type: 'integer', strategy: 'INCREMENT')]
     private int $id;
 
-    #[Groups(['episode:read','episode:write','episode:elastic', 'history:read'])]
+    #[Groups(['episode:read','episode:write', 'history:read'])]
     #[ODM\Field(type: 'string')]
     #[Assert\NotBlank]
     public string $title;
@@ -51,17 +51,17 @@ class Episode
     #[Assert\NotBlank]
     public string $description;
 
-    #[Groups(['episode:read','episode:write','episode:elastic'])]
+    #[Groups(['episode:read','episode:write'])]
     #[ODM\Field(type: 'integer')]
     #[Assert\NotBlank]
     public int $season;
 
-    #[Groups(['episode:read','episode:write','episode:elastic'])]
+    #[Groups(['episode:read','episode:write'])]
     #[ODM\Field(type: 'integer')]
     #[Assert\NotBlank]
     public int $episode;
 
-    #[Groups(['episode:read', 'episode:write','episode:elastic'])]
+    #[Groups(['episode:read', 'episode:write'])]
     #[ODM\Field(type: 'string')]
     #[Assert\NotBlank]
     public string $showTitle;
@@ -77,17 +77,17 @@ class Episode
     #[Assert\Choice(choices: self::AVAILABLE_PLATFORMS)]
     public string $platform;
 
-    #[Groups(['episode:read', 'episode:write', 'episode:elastic'])]
+    #[Groups(['episode:read', 'episode:write'])]
     #[ODM\Field(type: 'string')]
     #[Assert\Choice(choices: self::VALID_STATUSES)]
     public string $status;
 
-    #[Groups(['episode:read','episode:write','episode:elastic'])]
+    #[Groups(['episode:read','episode:write'])]
     #[ODM\Field(type: 'date')]
     #[Assert\NotBlank]
     public DateTimeInterface $airDate;
 
-    #[Groups(['episode:read','episode:write','episode:elastic'])]
+    #[Groups(['episode:read','episode:write'])]
     #[ODM\Field(type: 'boolean')]
     public bool $watched = false;
 

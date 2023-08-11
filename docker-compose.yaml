@@ -32,18 +32,5 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
       - db_data:/var/lib/mongodb/data:rw
-  elasticsearch:
-    container_name: elasticsearch
-    image: elasticsearch:local
-    build:
-      context: .
-      dockerfile: ./docker/elasticsearch/Dockerfile
-    environment:
-      discovery.type: single-node
-    ports:
-      - 127.0.0.1:9200:9200
-    volumes:
-      - es_data:/data/elasticsearch:rw
 volumes:
   db_data: {}
-  es_data: {}
