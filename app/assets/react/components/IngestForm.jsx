@@ -7,6 +7,7 @@ export default function IngestForm({id}) {
     const [ingestSeason, setIngestSeason ] = useState(1);
     const [ingestEpisode, setIngestEpisode ] = useState(1);
     const [ingestPlatform, setIngestPlatform ] = useState("Plex");
+    const [ingestUniverse, setIngestUniverse ] = useState("");
 
     function ingestShow(id) {
         console.log("Ingesting show " + id + " on platform " + ingestPlatform + " season " + ingestSeason + " episode " + ingestEpisode);
@@ -19,7 +20,8 @@ export default function IngestForm({id}) {
                 seriesId: id,
                 season: ingestSeason,
                 episode: ingestEpisode,
-                platform: ingestPlatform
+                platform: ingestPlatform,
+                universe: ingestUniverse
             })
         })
         .then((response) => {
@@ -58,6 +60,7 @@ export default function IngestForm({id}) {
                 <option value="Disney Plus">Disney Plus</option>
                 <option value="Amazon Prime">Amazon Prime</option>
             </select>
+            <input placeholder={"TV Universe"} name={"universe"} type={"text"} onChange={(e) => setIngestUniverse(e.target.value)}/>
             <button className={"btn btn-lg btn-block btn-dark " + ingestDisabled} type="button" onClick={() => ingestShow(id)}>
                 {ingestState}
             </button>

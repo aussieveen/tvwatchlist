@@ -9,6 +9,7 @@ export default function UpNext() {
     const [episodeData, setEpisodeData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [showIngestLink, setShowIngestLink] = useState(false);
 
     function refreshState() {
         fetch(`http://localhost:10000/api/nextup`, {
@@ -19,12 +20,15 @@ export default function UpNext() {
         })
         .then((response) => {
             if(!response.ok) {
-                console.log(response.json());
                 throw new Error("Network response was not ok");
             }
             return response.json();
         })
         .then((episodeData) => {
+            if(episodeData.length == 0) {
+                setShowIngestLink(true);
+                return;
+            }
             setEpisodeData(episodeData[0]);
             setError(null);
         })
@@ -44,6 +48,9 @@ export default function UpNext() {
             {loading && <div>Loading...</div>}
             {error && (
                 <div>{`There is a problem fetching the post data - ${error}`}</div>
+            )}
+            {showIngestLink && (
+                <div className= "ingestLink"><h1>No shows found</h1><p><a href = "/ingest">Find</a> something new to watch</p></div>
             )}
             {episodeData &&
                 (<div key={episodeData.id}>

@@ -8,7 +8,8 @@ readonly class Criteria
         public int $seriesId,
         public int $season,
         public int $episode,
-        public string $platform
+        public string $platform,
+        public string $universe
     )
     {
     }

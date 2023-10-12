@@ -77,7 +77,6 @@ export default function Ingest() {
                             id={show.id}
                         />
                     </Collapsible>
-
                 </div>
             ))}
 

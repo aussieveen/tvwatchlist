@@ -22,7 +22,8 @@ readonly class CriteriaFactory
             $requestBody['seriesId'],
             $requestBody['season'] ?? 1,
             $requestBody['episode'] ?? 1,
-            $requestBody['platform'] ?? 'Plex'
+            $requestBody['platform'] ?? 'Plex',
+            strtolower($requestBody['universe']) ?? ''
         );
     }
 }

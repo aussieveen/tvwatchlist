@@ -18,11 +18,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class NextUpController extends AbstractController
 {
-    private DocumentManager $documentManager;
-
-    public function __construct(DocumentManager $documentManager)
+    public function __construct(private readonly DocumentManager $documentManager)
     {
-        $this->documentManager = $documentManager;
     }
 
     #[Route('/api/nextup', name: 'next_up')]
@@ -52,11 +49,43 @@ class NextUpController extends AbstractController
 
     private function getRandomShow(): string
     {
+        $showList = [];
+        foreach($this->getUniverses() as $universe){
+            $builder = $this->documentManager->createAggregationBuilder(Episode::class);
+            $builder->match()->field('watched')->equals(false)
+                ->match()->field('universe')->equals($universe)
+                ->sort('airDate', 'ASC')
+                ->limit(1);
+            foreach($builder->getAggregation()->getIterator()->toArray() as $show){
+                $showList[] = $show['showTitle'];
+            }
+        }
+
         $builder = $this->documentManager->createAggregationBuilder(Episode::class);
         $builder->match()->field('watched')->equals(false)
             ->match()->field('showTitle')->notIn($this->getRecentlyWatched())
+            ->match()->field('universe')->equals('')
             ->group()->field('id')->expression('$showTitle');
-        $showList = $builder->getAggregation()->getIterator()->toArray();
-        return $showList[array_rand($showList)]['_id'];
+        foreach($builder->getAggregation()->getIterator()->toArray() as $show){
+            $showList[] = $show['_id'];
+        }
+        if (empty($showList)){
+            return '';
+        }
+        return $showList[array_rand($showList)];
     }
+
+    private function getUniverses(): array
+    {
+        $builder = $this->documentManager->createAggregationBuilder(Episode::class);
+        $builder->match()->field('watched')->equals(false)
+            ->match()->field('universe')->notEqual('')
+            ->group()->field('id')->expression('$universe');
+        $universeList = [];
+        foreach ($builder->getAggregation()->getIterator()->toArray() as $key => $universe){
+            $universeList[] = $universe['_id'];
+        }
+        return $universeList;
+    }
+
 }

@@ -17,6 +17,7 @@ class EpisodeFactory
         string $platform,
         string $status,
         DateTimeInterface $airDate,
+        string $universe
     ): Episode
     {
         $episodeDocument = new Episode();
@@ -29,6 +30,7 @@ class EpisodeFactory
         $episodeDocument->platform = $platform;
         $episodeDocument->status = $status;
         $episodeDocument->airDate = $airDate;
+        $episodeDocument->universe = $universe;
 
         return $episodeDocument;
     }

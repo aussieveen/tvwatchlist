@@ -72,6 +72,11 @@ class Episode
     #[Assert\Url]
     public string $poster;
 
+    #[Groups(['episode:read','episode:write'])]
+    #[ODM\Field(type: 'string')]
+    #[Assert\NotBlank]
+    public string $universe;
+
     #[Groups(['episode:read', 'episode:write'])]
     #[ODM\Field(type: 'string')]
     #[Assert\Choice(choices: self::AVAILABLE_PLATFORMS)]

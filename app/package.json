@@ -28,6 +28,7 @@
     "dependencies": {
         "moment": "^2.29.4",
         "react-collapsible": "^2.10.0",
+        "react-datalist-input": "^3.2.1",
         "react-modal": "^3.16.1",
         "sass-loader": "^13.3.2"
     }

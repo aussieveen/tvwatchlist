@@ -32,6 +32,7 @@ export default function WatchedButton({id, refreshState}) {
                     showTitle: episode.showTitle,
                     episodeTitle: episode.title,
                     airDate: episode.airDate,
+                    universe: episode.universe ?? null,
                     watchedAt: date
                 })
             });

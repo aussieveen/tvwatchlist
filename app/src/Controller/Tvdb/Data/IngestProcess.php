@@ -50,14 +50,15 @@ readonly class IngestProcess
 
                     $episode = $this->episodeFactory->build(
                         $episodeData['name'],
-                        $episodeData['overview'],
+                        $episodeData['overview'] ?? '',
                         $episodeData['seasonNumber'],
                         $episodeData['number'],
                         $series['data']['name'],
                         $series['data']['image'],
                         $criteria->platform,
                         Episode::VALID_STATUSES[$series['data']['status']['id']],
-                        new DateTimeImmutable($episodeData['aired'])
+                        new DateTimeImmutable($episodeData['aired']),
+                        $criteria->universe
                     );
                     $this->documentManager->persist($episode);
                     $this->documentManager->flush();
