@@ -1,7 +1,6 @@
 import React from 'react'
 
 export default function WatchedButton({id, refreshState}) {
-    const delay = (ms = 1000) => new Promise(r => setTimeout(r, ms));
     const handleClick = () => {
         const watchedEpisode = fetch('http://localhost:10000/api/episodes/' + id, {
             method: "PATCH",
@@ -13,8 +12,11 @@ export default function WatchedButton({id, refreshState}) {
             })
         })
         .then((response) => {
-            console.log(response);
+            console.log(response)
             if (!response.ok) {
+                console.log(response.status);
+                console.log(response.statusText);
+                console.log(response.body)
                 throw new Error("Network response was not ok");
             }
             return response.json();

@@ -25,8 +25,14 @@ class NextUpController extends AbstractController
     #[Route('/api/nextup', name: 'next_up')]
     public function search():Response
     {
+        $show = $this->getRandomShow();
+
+        if($show === ''){
+            $show = $this->getRandomShow(true);
+        }
+
         $builder = $this->documentManager->createQueryBuilder(Episode::class)
-            ->field('showTitle')->equals($this->getRandomShow())
+            ->field('showTitle')->equals($show)
             ->field('watched')->equals(false)
             ->sort('season', 'ASC')
             ->sort('episode', 'ASC')
@@ -47,9 +53,11 @@ class NextUpController extends AbstractController
         return array_unique($watched);
     }
 
-    private function getRandomShow(): string
+    private function getRandomShow(bool $allowRecentlyWatched = false): string
     {
         $showList = [];
+        $recentlyWatched = $this->getRecentlyWatched();
+        var_dump($recentlyWatched);
         foreach($this->getUniverses() as $universe){
             $builder = $this->documentManager->createAggregationBuilder(Episode::class);
             $builder->match()->field('watched')->equals(false)
@@ -57,22 +65,36 @@ class NextUpController extends AbstractController
                 ->sort('airDate', 'ASC')
                 ->limit(1);
             foreach($builder->getAggregation()->getIterator()->toArray() as $show){
-                $showList[] = $show['showTitle'];
+                if(!in_array($show['showTitle'], $recentlyWatched) || $allowRecentlyWatched){
+                    $showList[] = $show['showTitle'];
+                }
             }
         }
 
         $builder = $this->documentManager->createAggregationBuilder(Episode::class);
+        if(!$allowRecentlyWatched)
+        {
+            $builder->match()->field('showTitle')->notIn($recentlyWatched);
+        }
+
         $builder->match()->field('watched')->equals(false)
-            ->match()->field('showTitle')->notIn($this->getRecentlyWatched())
             ->match()->field('universe')->equals('')
             ->group()->field('id')->expression('$showTitle');
+
         foreach($builder->getAggregation()->getIterator()->toArray() as $show){
             $showList[] = $show['_id'];
         }
+
         if (empty($showList)){
             return '';
         }
-        return $showList[array_rand($showList)];
+        var_dump($showList);
+
+        if(!$allowRecentlyWatched){
+            return $showList[array_rand($showList)];
+        }
+
+        return '';
     }
 
     private function getUniverses(): array

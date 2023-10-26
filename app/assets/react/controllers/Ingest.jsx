@@ -16,6 +16,7 @@ export default function Ingest() {
         clearTimeout(timer)
 
         const newTimer = setTimeout(() => {
+            if(event.target.value === '') return
             searchShows(event.target.value)
         }, 500)
 
@@ -38,7 +39,6 @@ export default function Ingest() {
         })
         .then((showData) => {
             setShowData(showData);
-            setSearching(false);
         })
         .catch((err) => {
             setError(err.message);

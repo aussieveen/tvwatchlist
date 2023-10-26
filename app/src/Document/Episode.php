@@ -74,7 +74,6 @@ class Episode
 
     #[Groups(['episode:read','episode:write'])]
     #[ODM\Field(type: 'string')]
-    #[Assert\NotBlank]
     public string $universe;
 
     #[Groups(['episode:read', 'episode:write'])]

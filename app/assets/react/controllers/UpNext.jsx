@@ -25,7 +25,7 @@ export default function UpNext() {
             return response.json();
         })
         .then((episodeData) => {
-            if(episodeData.length == 0) {
+            if(episodeData.length === 0) {
                 setShowIngestLink(true);
                 return;
             }
