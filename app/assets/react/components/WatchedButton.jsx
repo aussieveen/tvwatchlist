@@ -28,7 +28,7 @@ export default function WatchedButton({id, refreshState}) {
             return fetch('http://localhost:10000/api/histories', {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/ld+json"
                 },
                 body: JSON.stringify({
                     showTitle: episode.showTitle,
