@@ -39,7 +39,8 @@ export default function WatchedButton({id, refreshState}) {
                 })
             });
         }).finally(() => {
-            setTimeout(() => {refreshState()}, 1500);
+            refreshState();
+            // setTimeout(() => {refreshState()}, 1500);
         });
     };
 

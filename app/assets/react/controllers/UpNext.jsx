@@ -45,12 +45,19 @@ export default function UpNext() {
 
     return (
         <div>
+            {showIngestLink && (
+                <h1 id="nothing-found">No shows found</h1>
+            )}
+            <div className="component text-center">
+                <a href = "/ingest">
+                    <button className="btn btn-lg btn-block btn-primary" type="button" id="navButton">
+                        Find something to watch
+                    </button>
+                </a>
+            </div>
             {loading && <div>Loading...</div>}
             {error && (
                 <div>{`There is a problem fetching the post data - ${error}`}</div>
-            )}
-            {showIngestLink && (
-                <div className= "ingestLink"><h1>No shows found</h1><p><a href = "/ingest">Find</a> something new to watch</p></div>
             )}
             {episodeData &&
                 (<div key={episodeData.id}>

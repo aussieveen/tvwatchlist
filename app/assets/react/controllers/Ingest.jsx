@@ -53,6 +53,13 @@ export default function Ingest() {
 
     return (
         <div>
+            <div className="component text-center">
+                <a href = "/">
+                    <button className="btn btn-lg btn-block btn-primary" type="button" id="navButton">
+                        Go Back
+                    </button>
+                </a>
+            </div>
             {error && (
                 <div>{`There is a problem fetching the post data - ${error}`}</div>
             )}
@@ -79,7 +86,9 @@ export default function Ingest() {
                     </Collapsible>
                 </div>
             ))}
+            <div>
 
+            </div>
         </div>
     )
 }

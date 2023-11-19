@@ -33,6 +33,7 @@ body{
   background-color: #16171a;
   //color: #6d6f78;
   color:lightgrey;
+  margin-top:10px;
   img{
     border:5px solid lightcyan;
   }
@@ -137,5 +138,16 @@ body{
   .ingestLink{
     text-align:center;
   }
-
+  #navButton {
+    margin-bottom: 20px;
+    a {
+      color: white;
+      text-decoration: none;
+    }
+  }
+  #nothing-found {
+    margin-top: 20px;
+    text-align: center;
+    color: white;
+  }
 }
