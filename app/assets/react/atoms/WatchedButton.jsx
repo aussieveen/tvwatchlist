@@ -12,7 +12,6 @@ export default function WatchedButton({id, refreshState}) {
             })
         })
         .then((response) => {
-            console.log(response)
             if (!response.ok) {
                 console.log(response.status);
                 console.log(response.statusText);

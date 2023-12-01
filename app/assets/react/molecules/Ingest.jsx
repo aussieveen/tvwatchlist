@@ -1,8 +1,8 @@
 import React from "react";
 import Collapsible from 'react-collapsible';
 import { useState, useEffect } from "react";
-import ShowPoster from "../components/ShowPoster";
-import IngestForm from "../components/IngestForm";
+import ShowPoster from "../atoms/ShowPoster";
+import IngestForm from "../organisms/IngestForm";
 
 export default function Ingest() {
     const [showData, setShowData ] = useState(null);
@@ -53,13 +53,6 @@ export default function Ingest() {
 
     return (
         <div>
-            <div className="component text-center">
-                <a href = "/">
-                    <button className="btn btn-lg btn-block btn-primary" type="button" id="navButton">
-                        Go Back
-                    </button>
-                </a>
-            </div>
             {error && (
                 <div>{`There is a problem fetching the post data - ${error}`}</div>
             )}
@@ -70,9 +63,8 @@ export default function Ingest() {
             {searching &&
                 <div>Searching...</div>
             }
-            {showData && showData.data.map((show,index) => (
+            {showData && showData.data.map((show) => (
                 <div key={show.id} className="ingestCard">
-
                     <h3>{show.title}</h3>
                     <ShowPoster
                         image={show.poster}
