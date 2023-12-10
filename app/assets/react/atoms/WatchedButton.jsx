@@ -13,17 +13,13 @@ export default function WatchedButton({id, refreshState}) {
         })
         .then((response) => {
             if (!response.ok) {
-                console.log(response.status);
-                console.log(response.statusText);
-                console.log(response.body)
                 throw new Error("Network response was not ok");
             }
             return response.json();
         });
 
         watchedEpisode.then(episode => {
-            const dateObject = new Date();
-            let date = dateObject.toUTCString();
+            let date = new Date().toUTCString();
             return fetch('http://localhost:10000/api/histories', {
                 method: "POST",
                 headers: {
@@ -39,7 +35,6 @@ export default function WatchedButton({id, refreshState}) {
             });
         }).finally(() => {
             refreshState();
-            // setTimeout(() => {refreshState()}, 1500);
         });
     };
 

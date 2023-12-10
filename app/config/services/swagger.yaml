@@ -1,4 +1,21 @@
 paths:
+  /api/nextup:
+    get:
+      tags:
+        - NextUp
+      summary: Get the next episode to watch
+      operationId: nextUp
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: &episodeResponse
+              schema:
+                $ref: "#/components/schemas/NextUpResponse"
+            application/ld+json: *episodeResponse
+            text/html: *episodeResponse
   /api/tvdb/search:
     get:
       tags:
@@ -44,6 +61,35 @@ paths:
           description: Bad request
 components:
   schemas:
+    NextUpResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          title:
+            type: string
+          description:
+            type: string
+          season:
+            type: integer
+          episode:
+            type: integer
+          showTitle:
+            type: string
+          poster:
+            type: string
+          universe:
+            type: string
+          platform:
+            type: string
+          status:
+            type: string
+          airDate:
+            type: string
+          watched:
+            type: boolean
     FindResponse:
       type: array
       items:
