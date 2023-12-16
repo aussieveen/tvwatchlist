@@ -2,7 +2,7 @@
 
 namespace App\Controller\Tvdb\Data;
 
-use App\Api\TvdbClient;
+use App\Api\TvdbQueryClient;
 use App\Document\Episode;
 use App\Entity\Tvdb\Data\Ingest\Criteria;
 use App\Factory\EpisodeFactory;
@@ -14,7 +14,7 @@ use RuntimeException;
 readonly class IngestProcess
 {
     public function __construct(
-        private TvdbClient $tvdbClient,
+        private TvdbQueryClient $tvdbClient,
         private EpisodeFactory $episodeFactory,
         private DocumentManager $documentManager
     )

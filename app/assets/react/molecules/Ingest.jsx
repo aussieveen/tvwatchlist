@@ -25,7 +25,7 @@ export default function Ingest() {
     function searchShows(string) {
         console.log("searching for " + string)
         setSearching(true);
-        fetch(`http://localhost:10000/api/tvdb/search?showTitle=`+string+`&type=series`, {
+        fetch(`/api/tvdb/search?showTitle=`+string+`&type=series`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json+ld"

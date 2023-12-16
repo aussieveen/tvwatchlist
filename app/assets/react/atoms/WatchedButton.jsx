@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function WatchedButton({id, refreshState}) {
     const handleClick = () => {
-        const watchedEpisode = fetch('http://localhost:10000/api/episodes/' + id, {
+        const watchedEpisode = fetch('/api/episodes/' + id, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/merge-patch+json"
@@ -20,7 +20,7 @@ export default function WatchedButton({id, refreshState}) {
 
         watchedEpisode.then(episode => {
             let date = new Date().toUTCString();
-            return fetch('http://localhost:10000/api/histories', {
+            return fetch('/api/histories', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/ld+json"

@@ -17,7 +17,7 @@ class ShowFactory
         return new Show(
             $show['tvdb_id'],
             $show['translations']['eng'] ?? $show['name'],
-            $show['overviews']['eng'] ?? $show['overview'] ??'No overview available',
+            $show['overviews']['eng'] ?? $show['overview'] ?? 'No overview available',
             $show['image_url'] ?? '',
             $show['year'] ?? null
         );

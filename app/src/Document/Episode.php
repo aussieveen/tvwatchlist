@@ -3,6 +3,10 @@
 namespace App\Document;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use DateTimeInterface;
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
@@ -20,6 +24,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ODM\HasLifecycleCallbacks]
 #[Unique(fields: ['showTitle', 'season', 'episode'], message: 'Show, Season and Episode combination should be unique')]
 #[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Patch(),
+        new Delete()
+    ],
     normalizationContext: [
         'groups' => ['episode:read'],
         'skip_null_values' => true,
@@ -37,56 +47,56 @@ class Episode
     ];
     final const AVAILABLE_PLATFORMS = ['Plex','Netflix','Disney Plus','Amazon Prime'];
 
-    #[Groups(['episode:read', 'history:read', 'identifier'])]
+    #[Groups(['episode:read','identifier'])]
     #[ODM\Id(type: 'integer', strategy: 'INCREMENT')]
     private int $id;
 
-    #[Groups(['episode:read','episode:write', 'history:read'])]
+    #[Groups(['episode:read'])]
     #[ODM\Field(type: 'string')]
     #[Assert\NotBlank]
     public string $title;
 
-    #[Groups(['episode:read','episode:write'])]
+    #[Groups(['episode:read'])]
     #[ODM\Field(type: 'string')]
     #[Assert\NotBlank]
     public string $description;
 
-    #[Groups(['episode:read','episode:write'])]
+    #[Groups(['episode:read'])]
     #[ODM\Field(type: 'integer')]
     #[Assert\NotBlank]
     public int $season;
 
-    #[Groups(['episode:read','episode:write'])]
+    #[Groups(['episode:read'])]
     #[ODM\Field(type: 'integer')]
     #[Assert\NotBlank]
     public int $episode;
 
-    #[Groups(['episode:read', 'episode:write'])]
+    #[Groups(['episode:read'])]
     #[ODM\Field(type: 'string')]
     #[Assert\NotBlank]
     public string $showTitle;
 
-    #[Groups(['episode:read','episode:write'])]
+    #[Groups(['episode:read'])]
     #[ODM\Field(type: 'string')]
     #[Assert\NotBlank]
     #[Assert\Url]
     public string $poster;
 
-    #[Groups(['episode:read','episode:write'])]
+    #[Groups(['episode:read'])]
     #[ODM\Field(type: 'string')]
     public string $universe;
 
-    #[Groups(['episode:read', 'episode:write'])]
+    #[Groups(['episode:read'])]
     #[ODM\Field(type: 'string')]
     #[Assert\Choice(choices: self::AVAILABLE_PLATFORMS)]
     public string $platform;
 
-    #[Groups(['episode:read', 'episode:write'])]
+    #[Groups(['episode:read'])]
     #[ODM\Field(type: 'string')]
     #[Assert\Choice(choices: self::VALID_STATUSES)]
     public string $status;
 
-    #[Groups(['episode:read','episode:write'])]
+    #[Groups(['episode:read'])]
     #[ODM\Field(type: 'date')]
     #[Assert\NotBlank]
     public DateTimeInterface $airDate;

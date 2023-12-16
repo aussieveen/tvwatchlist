@@ -3,6 +3,10 @@
 namespace App\Document;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use DateTimeInterface;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -10,6 +14,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ODM\Document]
 #[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Post(),
+        new Delete()
+    ],
     normalizationContext: [
         'groups' => ['history:read'],
         'skip_null_values' => true,

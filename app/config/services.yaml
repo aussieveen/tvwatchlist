@@ -12,6 +12,11 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            $persistProcessor: '@api_platform.doctrine_mongodb.odm.state.persist_processor'
+            $removeProcessor: '@api_platform.doctrine_mongodb.odm.state.remove_processor'
+            $itemProvider: '@api_platform.doctrine_mongodb.odm.state.item_provider'
+            $collectionProvider: '@api_platform.doctrine_mongodb.odm.state.collection_provider'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -21,8 +26,11 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Kernel.php'
 
-    App\Entity\Search\Query\Watched:
-        factory: ['@App\Entity\Search\Query\WatchedFactory', 'build' ]
+    App\Api\TvdbAuthClient:
+        arguments:
+            $apikey: '%env(TVDB_APIKEY)%'
+            $pin: '%env(TVDB_PIN)%'
+
 
     App\Entity\Tvdb\Api\ApiQuery\ShowTitle:
         factory: ['@App\Entity\Tvdb\Api\ApiQuery\ShowTitleFactory', 'build' ]

@@ -1,11 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from "react";
-import Show from "../atoms/Show";
-import WatchedButton from "../atoms/WatchedButton";
-import ShowPoster from "../atoms/ShowPoster";
-import Episode from "../atoms/Episode";
 import ShowUpNext from "../organisms/ShowUpNext";
-
 
 export default function UpNext() {
     const [episodeData, setEpisodeData] = useState(null);
@@ -14,7 +9,7 @@ export default function UpNext() {
     const [showIngestLink, setShowIngestLink] = useState(false);
 
     function refreshState() {
-        fetch(`http://localhost:10000/api/nextup`, {
+        fetch(`/api/nextup`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json+ld"

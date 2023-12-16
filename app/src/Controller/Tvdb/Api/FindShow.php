@@ -2,7 +2,7 @@
 
 namespace App\Controller\Tvdb\Api;
 
-use App\Api\TvdbClient;
+use App\Api\TvdbQueryClient;
 use App\Entity\Tvdb\Api\ApiQuery;
 use App\Entity\Tvdb\Api\ShowFactory;
 use Exception;
@@ -15,7 +15,7 @@ class FindShow extends AbstractController
 {
     public function __construct(
         private readonly ApiQuery $apiQuery,
-        private readonly TvdbClient $tvdbClient,
+        private readonly TvdbQueryClient $tvdbClient,
         private readonly ShowFactory $showFactory
     )
     {

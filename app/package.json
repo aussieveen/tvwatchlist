@@ -27,6 +27,7 @@
     },
     "dependencies": {
         "moment": "^2.29.4",
+        "process": "^0.11.10",
         "react-collapsible": "^2.10.0",
         "react-datalist-input": "^3.2.1",
         "react-modal": "^3.16.1",

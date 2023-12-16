@@ -12,7 +12,7 @@ export default function IngestForm({id}) {
     function ingestShow(id) {
         console.log("Ingesting show " + id + " on platform " + ingestPlatform + " season " + ingestSeason + " episode " + ingestEpisode + " universe " + ingestUniverse);
         setIngestState('Ingesting...');
-        fetch('http://localhost:10000/api/tvdb/series/ingest',{
+        fetch('/api/tvdb/series/ingest',{
             method: "POST",
             headers: {
                 "Content-Type": "application/json+ld"

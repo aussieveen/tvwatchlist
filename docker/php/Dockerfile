@@ -1,4 +1,4 @@
-FROM php:8.2-fpm as app
+FROM php:8.3-fpm as app
 
 ENV OPCACHE_VALIDATE_TIMESTAMPS=0
 
