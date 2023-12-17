@@ -5,7 +5,7 @@ ENV OPCACHE_VALIDATE_TIMESTAMPS=0
 ARG MONGODB_VERSION=1.15.1
 
 RUN apt update \
-    && apt install -y zlib1g-dev g++ git libicu-dev zip libzip-dev zip libcurl4-openssl-dev pkg-config libssl-dev \
+    && apt install -y zlib1g-dev g++ git libicu-dev zip libzip-dev zip libcurl4-openssl-dev pkg-config libssl-dev cron \
     && docker-php-ext-install intl opcache pdo pdo_mysql \
     && pecl install apcu \
     && docker-php-ext-enable apcu \
@@ -33,6 +33,10 @@ COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
 
 RUN set -xe; \
     mkdir ~/.composer;
+
+COPY cron/crontab /etc/cron.d/tvwatchlist
+RUN chmod 0644 /etc/cron.d/tvwatchlist \
+    && crontab /etc/cron.d/tvwatchlist
 
 COPY docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint

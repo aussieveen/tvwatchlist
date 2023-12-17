@@ -1,0 +1,1 @@
+* * * * * root /bin/bash -l -c 'date > /var/www/html/cron-test.txt'
