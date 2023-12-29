@@ -1,21 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Tvdb\Api\ApiQuery;
 
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class ShowTitleFactory
+readonly class ShowTitleFactory
 {
-    public function __construct(private readonly RequestStack $requestStack)
+    public function __construct()
     {
     }
 
-    public function build(): ShowTitle
+    public function buildFromRequestStack(RequestStack $requestStack): ShowTitle
     {
-        $request = $this->requestStack->getCurrentRequest() ?? throw new BadRequestException('No request found');
+        $request = $requestStack->getCurrentRequest() ?? throw new BadRequestException('No request found');
         $searchTerm = $request->query->get('showTitle');
-        if($searchTerm === null) {
+        if ($searchTerm === null) {
             throw new BadRequestException('No show title provided');
         }
         return new ShowTitle($searchTerm);

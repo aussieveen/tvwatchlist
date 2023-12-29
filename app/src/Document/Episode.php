@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Document;
 
 use ApiPlatform\Metadata\ApiResource;
@@ -42,10 +44,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 class Episode
 {
+    public final const STATUS_AIRING = 1;
+    public final const STATUS_FINISHED = 2;
+    public final const STATUS_UPCOMING = 3;
     public final const VALID_STATUSES = [
-        1 => 'airing', 2 => 'finished', 3 => 'upcoming'
+        self::STATUS_AIRING => 'airing', self::STATUS_FINISHED => 'finished', self::STATUS_UPCOMING => 'upcoming'
     ];
-    final const AVAILABLE_PLATFORMS = ['Plex','Netflix','Disney Plus','Amazon Prime'];
+    public final const AVAILABLE_PLATFORMS = ['Plex','Netflix','Disney Plus','Amazon Prime'];
 
     #[Groups(['episode:read','identifier'])]
     #[ODM\Id(type: 'integer', strategy: 'INCREMENT')]
@@ -71,10 +76,18 @@ class Episode
     #[Assert\NotBlank]
     public int $episode;
 
+    #[ODM\Field(type: 'string')]
+    #[Assert\NotBlank]
+    public string $tvdbEpisodeId;
+
     #[Groups(['episode:read'])]
     #[ODM\Field(type: 'string')]
     #[Assert\NotBlank]
     public string $showTitle;
+
+    #[ODM\Field(type: 'string')]
+    #[Assert\NotBlank]
+    public string $tvdbSeriesId;
 
     #[Groups(['episode:read'])]
     #[ODM\Field(type: 'string')]

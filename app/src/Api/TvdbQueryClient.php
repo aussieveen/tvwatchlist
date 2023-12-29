@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Api;
 
 use App\Entity\Tvdb\Api\ApiQuery\ShowTitle;
@@ -11,14 +13,11 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class TvdbQueryClient extends TvdbClientBase
 {
-
     public function __construct(
         private readonly HttpClientInterface $httpClient,
         private readonly TvdbTokenProvider $tokenProvider
     ) {
     }
-
-
 
     public function search(ShowTitle $showTitle): ResponseInterface
     {
@@ -41,7 +40,7 @@ class TvdbQueryClient extends TvdbClientBase
         }
     }
 
-    public function seriesExtended(int $seriesId): ResponseInterface
+    public function seriesExtended(string $seriesId): ResponseInterface
     {
         try {
             return $this->httpClient->request(
@@ -58,7 +57,7 @@ class TvdbQueryClient extends TvdbClientBase
         }
     }
 
-    public function seasonExtended(int $seasonId): ResponseInterface
+    public function seasonExtended(string $seasonId): ResponseInterface
     {
         try {
             return $this->httpClient->request(

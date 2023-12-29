@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Tvdb\Data;
 
 use App\Api\TvdbQueryClient;
 use App\Document\Episode;
 use App\Entity\Tvdb\Data\Ingest\Criteria;
-use App\Factory\EpisodeFactory;
+use App\Factory\EpisodeDocumentFactory;
 use DateTimeImmutable;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Exception;
@@ -13,9 +15,11 @@ use RuntimeException;
 
 readonly class IngestProcess
 {
+    private const REGULAR_SEASON_TYPE = 1;
+
     public function __construct(
         private TvdbQueryClient $tvdbClient,
-        private EpisodeFactory $episodeFactory,
+        private EpisodeDocumentFactory $episodeFactory,
         private DocumentManager $documentManager
     )
     {
@@ -24,18 +28,25 @@ readonly class IngestProcess
     public function ingest(Criteria $criteria): void
     {
         $seriesResponse = $this->tvdbClient->seriesExtended($criteria->seriesId);
+
         $series = json_decode($seriesResponse->getContent(), true);
         if ($series['status'] !== 'success') {
             throw new RuntimeException('Series not found');
         }
 
-        try{
+        $episodeRepository = $this->documentManager->getRepository(Episode::class);
+
+        try {
             foreach ($series['data']['seasons'] as $seasonData) {
-                if ($seasonData['type']['id'] !== 1 || $seasonData['number'] < $criteria->season) {
+                // Don't import specials or seasons before the one we're looking for
+                if (
+                    $seasonData['type']['id'] !== self::REGULAR_SEASON_TYPE
+                    || $seasonData['number'] < $criteria->season
+                ) {
                     continue;
                 }
 
-                $seasonResponse = $this->tvdbClient->seasonExtended($seasonData['id']);
+                $seasonResponse = $this->tvdbClient->seasonExtended((string) $seasonData['id']);
 
                 $season = json_decode($seasonResponse->getContent(), true);
 
@@ -44,28 +55,40 @@ readonly class IngestProcess
                 }
 
                 foreach ($season['data']['episodes'] as $episodeData) {
-                    if ($episodeData['seasonNumber'] === $criteria->season && $episodeData['number'] < $criteria->episode) {
+                    // Don't import episodes before the one we're looking for
+                    if (
+                        $episodeData['seasonNumber'] === $criteria->season
+                        && $episodeData['number'] < $criteria->episode
+                    ) {
                         continue;
                     }
 
+                    // Find and update existing episode if it was previously ingested. Otherwise, create a new one.
+                    $existingEpisode = $episodeRepository->findOneBy([
+                        'tvdbEpisodeId' => $episodeData['id'],
+                    ]);
+
                     $episode = $this->episodeFactory->build(
                         $episodeData['name'],
+                        (string) $episodeData['id'],
                         $episodeData['overview'] ?? '',
                         $episodeData['seasonNumber'],
                         $episodeData['number'],
                         $series['data']['name'],
+                        $criteria->seriesId,
                         $series['data']['image'],
                         $criteria->platform,
                         Episode::VALID_STATUSES[$series['data']['status']['id']],
                         new DateTimeImmutable($episodeData['aired']),
-                        $criteria->universe
+                        $criteria->universe,
+                        $existingEpisode
                     );
+
                     $this->documentManager->persist($episode);
                     $this->documentManager->flush();
                 }
             }
-        }catch(Exception $e){
+        } catch (Exception $e) {
         }
-
     }
 }

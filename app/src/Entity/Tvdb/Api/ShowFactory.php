@@ -1,16 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Tvdb\Api;
 
 class ShowFactory
 {
-    public function create(Array $show): ?Show
+    public function create(array $show): ?Show
     {
-        if(empty($show)) {
+        if (empty($show)) {
             return null;
         }
 
-        if($show['type'] !== 'series') {
+        if ($show['type'] !== 'series') {
             return null;
         }
 
@@ -19,7 +21,7 @@ class ShowFactory
             $show['translations']['eng'] ?? $show['name'],
             $show['overviews']['eng'] ?? $show['overview'] ?? 'No overview available',
             $show['image_url'] ?? '',
-            $show['year'] ?? null
+            isset($show['year']) ? (int) $show['year'] : null,
         );
     }
 }

@@ -9,18 +9,18 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 
 class TvUniverses
 {
-    public function __construct(private DocumentManager $documentManager)
+    public function __construct(private readonly DocumentManager $documentManager)
     {
     }
 
-    public function getTvUniversesById():array
+    public function getTvUniversesById(): array
     {
         $builder = $this->documentManager->createAggregationBuilder(Episode::class);
         $builder->match()->field('watched')->equals(false)
             ->match()->field('universe')->notEqual('')
             ->group()->field('id')->expression('$universe');
         $universeList = [];
-        foreach ($builder->getAggregation()->getIterator()->toArray() as $key => $universe){
+        foreach ($builder->getAggregation()->getIterator()->toArray() as $key => $universe) {
             $universeList[] = $universe['_id'];
         }
         return $universeList;

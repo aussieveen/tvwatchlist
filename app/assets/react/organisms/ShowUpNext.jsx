@@ -3,6 +3,7 @@ import Episode from "../atoms/Episode";
 import Show from "../atoms/Show";
 import WatchedButton from "../atoms/WatchedButton";
 import ShowPoster from "../atoms/ShowPoster";
+import RemoveButton from "../atoms/RemoveButton";
 
 export default function ShowUpNext({episodeData, refreshState}) {
     return (
@@ -26,6 +27,7 @@ export default function ShowUpNext({episodeData, refreshState}) {
                 />
             </div>
             <WatchedButton id={episodeData.id} refreshState={refreshState}/>
+            <RemoveButton id={episodeData.tvdbSeriesId} refreshState={refreshState}/>
         </div>
     )
 }

@@ -1,43 +1,51 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
+use App\Controller\Tvdb\Data\IngestProcess;
+use App\Entity\Tvdb\Data\Ingest\Criteria;
+use App\Entity\Tvdb\Data\Ingest\CriteriaFactory;
+use App\Repository\Episode;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'app:ingest-ongoing',
-    description: 'Add a short description for your command',
+    description: 'Ingest ongoing series',
 )]
 class IngestOngoingCommand extends Command
 {
-    protected function configure(): void
-    {
-        $this
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
-        ;
+    public function __construct(
+        private readonly Episode $episodeRepository,
+        private readonly IngestProcess $ingestProcess
+    ) {
+        parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
-        $arg1 = $input->getArgument('arg1');
+        //Find all series that are currently airing
+        $ongoingSeries = $this->episodeRepository->getUnfinishedSeries();
 
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
+        //Reingest the series from TVDB
+        foreach ($ongoingSeries as $series) {
+            //Get all existing episodes for the series
+            $firstIngestedEpisode = $this->episodeRepository->getFirstEpisodeForSeries($series['_id']);
+            $criteria = new Criteria(
+                $firstIngestedEpisode->tvdbSeriesId,
+                $firstIngestedEpisode->season,
+                $firstIngestedEpisode->episode,
+                $firstIngestedEpisode->platform,
+                $firstIngestedEpisode->universe
+            );
+            //Ingest the series
+            $this->ingestProcess->ingest($criteria);
         }
-
-        if ($input->getOption('option1')) {
-            // ...
-        }
-
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
 
         return Command::SUCCESS;
     }

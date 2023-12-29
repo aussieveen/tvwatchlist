@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Tvdb;
 
 use App\Controller\Tvdb\Data\IngestProcess;
@@ -13,8 +15,7 @@ class IngestRequest extends AbstractController
     public function __construct(
         private readonly Criteria $criteria,
         private readonly IngestProcess $ingestProcess
-    )
-    {
+    ) {
     }
 
     #[Route(
@@ -34,7 +35,7 @@ class IngestRequest extends AbstractController
                 $this->criteria->seriesId,
                 $this->criteria->season,
                 $this->criteria->episode
-                ),
+            ),
             'status' => 202,
             'title' => 'OK'
         ]);

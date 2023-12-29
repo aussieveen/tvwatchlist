@@ -24,9 +24,10 @@ export default function UpNext() {
             .then((episodeData) => {
                 if(episodeData.length === 0) {
                     setShowIngestLink(true);
+                    setEpisodeData(null);
                     return;
                 }
-                setEpisodeData(episodeData[0]);
+                setEpisodeData(episodeData);
                 setError(null);
             })
             .catch((err) => {

@@ -50,9 +50,11 @@
     "ext-http": "*"
   },
   "require-dev": {
+    "ext-mongodb": "*",
     "api-platform/schema-generator": "^5.0",
     "mockery/mockery": "^1.6",
     "phpunit/phpunit": "^10",
+    "squizlabs/php_codesniffer": "*",
     "symfony/browser-kit": "6.4.*",
     "symfony/css-selector": "6.4.*",
     "symfony/debug-bundle": "6.4.*",
@@ -61,8 +63,7 @@
     "symfony/phpunit-bridge": "6.4.*",
     "symfony/stopwatch": "6.4.*",
     "symfony/var-dumper": "6.4.*",
-    "symfony/web-profiler-bundle": "6.4.*",
-    "ext-mongodb": "*"
+    "symfony/web-profiler-bundle": "6.4.*"
   },
   "config": {
     "optimize-autoloader": true,

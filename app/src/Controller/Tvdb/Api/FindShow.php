@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Tvdb\Api;
 
 use App\Api\TvdbQueryClient;
@@ -10,15 +12,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-
 class FindShow extends AbstractController
 {
     public function __construct(
         private readonly ApiQuery $apiQuery,
         private readonly TvdbQueryClient $tvdbClient,
         private readonly ShowFactory $showFactory
-    )
-    {
+    ) {
     }
 
     #[Route('/api/tvdb/search', name: 'api_tvdb_search', methods: ['GET'])]
@@ -30,7 +30,9 @@ class FindShow extends AbstractController
             if ($body['status'] !== 'success') {
                 throw new Exception('Something went wrong');
             }
+
             $shows = [];
+
             foreach ($body['data'] as $show) {
                 $shows[] = $this->showFactory->create($show);
             }

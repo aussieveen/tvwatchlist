@@ -12,11 +12,10 @@ class Episode
     public function __construct(
         private DocumentManager $documentManager,
         private RecentlyWatched $recentlyWatched
-    )
-    {
+    ) {
     }
 
-    public function getLatestFromShow(string $show): array
+    public function getLatestUnwatchedEpisode(string $show): ?EpisodeDocument
     {
         $builder = $this->documentManager->createQueryBuilder(EpisodeDocument::class)
             ->field('showTitle')->equals($show)
@@ -25,7 +24,7 @@ class Episode
             ->sort('episode', 'ASC')
             ->limit(1);
 
-        return $builder->getQuery()->execute()->toArray();
+        return $builder->getQuery()->execute()->toArray()[0] ?? null;
     }
 
     public function getLatestFromUniverse(string $universe): array
@@ -49,4 +48,32 @@ class Episode
         return $builder->getAggregation()->getIterator()->toArray();
     }
 
+    public function getUnfinishedSeries(): array
+    {
+        $builder = $this->documentManager->createAggregationBuilder(EpisodeDocument::class);
+        $builder->match()->field('status')->notEqual(EpisodeDocument::VALID_STATUSES[EpisodeDocument::STATUS_FINISHED])
+            ->group()->field('id')->expression('$showTitle');
+
+        return $builder->getAggregation()->getIterator()->toArray();
+    }
+
+    public function getFirstEpisodeForSeries(string $showTitle): EpisodeDocument
+    {
+        $builder = $this->documentManager->createQueryBuilder(EpisodeDocument::class)
+            ->field('showTitle')->equals($showTitle)
+            ->sort('season', 'ASC')
+            ->sort('episode', 'ASC')
+            ->limit(1);
+
+        return $builder->getQuery()->execute()->toArray()[0];
+    }
+
+    public function deleteEpisodesWithTvdbSeriesId(string $tvdbSeriesId): void
+    {
+        $builder = $this->documentManager->createQueryBuilder(EpisodeDocument::class)
+            ->remove()
+            ->field('tvdbSeriesId')->equals($tvdbSeriesId);
+
+        $builder->getQuery()->execute();
+    }
 }

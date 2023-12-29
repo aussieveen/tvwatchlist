@@ -12,11 +12,6 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-        bind:
-            $persistProcessor: '@api_platform.doctrine_mongodb.odm.state.persist_processor'
-            $removeProcessor: '@api_platform.doctrine_mongodb.odm.state.remove_processor'
-            $itemProvider: '@api_platform.doctrine_mongodb.odm.state.item_provider'
-            $collectionProvider: '@api_platform.doctrine_mongodb.odm.state.collection_provider'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -33,10 +28,14 @@ services:
 
 
     App\Entity\Tvdb\Api\ApiQuery\ShowTitle:
-        factory: ['@App\Entity\Tvdb\Api\ApiQuery\ShowTitleFactory', 'build' ]
+        factory: ['@App\Entity\Tvdb\Api\ApiQuery\ShowTitleFactory', 'buildFromRequestStack' ]
+        arguments:
+            $requestStack: '@request_stack'
 
     App\Entity\Tvdb\Data\Ingest\Criteria:
-        factory: [ '@App\Entity\Tvdb\Data\Ingest\CriteriaFactory', 'build' ]
+        factory: [ '@App\Entity\Tvdb\Data\Ingest\CriteriaFactory', 'buildFromRequestStack' ]
+        arguments:
+            $requestStack: '@request_stack'
 
     App\Swagger\SwaggerDecorator:
         decorates: 'api_platform.openapi.normalizer'

@@ -30,9 +30,11 @@ class TvdbApiTokenCache
             $response = $this->tvdbClient->login();
             try {
                 $data = $response->toArray();
-            } catch (ClientExceptionInterface|RedirectionExceptionInterface|DecodingExceptionInterface|ServerExceptionInterface|TransportExceptionInterface $e) {
+            // @phpcs:ignore
+            } catch (ClientExceptionInterface | RedirectionExceptionInterface | DecodingExceptionInterface | ServerExceptionInterface | TransportExceptionInterface $e) {
                 throw new RuntimeException('Error while getting token', 0, $e);
             }
+
             return $data['data']['token'];
         });
     }
