@@ -28,6 +28,7 @@ COPY docker/php/conf.d/tvwatchlist.ini ${PHP_INI_DIR}/conf.d/tvwatchlist.ini
 WORKDIR /var/www/html
 
 COPY docker/nginx/conf.d/default.conf /etc/nginx/conf.d/
+RUN rm /etc/nginx/sites-enabled/default
 
 CMD ["php-fpm"]
 
