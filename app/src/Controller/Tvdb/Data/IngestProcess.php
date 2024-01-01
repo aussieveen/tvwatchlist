@@ -63,11 +63,15 @@ readonly class IngestProcess
                         continue;
                     }
 
+                    // Don't import episodes that haven't aired yet
+                    if($episodeData['aired'] === null) {
+                        continue;
+                    }
+
                     // Find and update existing episode if it was previously ingested. Otherwise, create a new one.
                     $existingEpisode = $episodeRepository->findOneBy([
                         'tvdbEpisodeId' => $episodeData['id'],
                     ]);
-
                     $episode = $this->episodeFactory->build(
                         $episodeData['name'],
                         (string) $episodeData['id'],
