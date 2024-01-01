@@ -48,6 +48,15 @@ class Episode
         return $builder->getAggregation()->getIterator()->toArray();
     }
 
+    public function getSeriesWithWatchableEpisodes(): array
+    {
+        $builder = $this->documentManager->createAggregationBuilder(EpisodeDocument::class);
+        $builder->match()->field('watched')->equals(false)
+            ->group()->field('id')->expression('$showTitle');
+
+        return $builder->getAggregation()->getIterator()->toArray();
+    }
+
     public function getUnfinishedSeries(): array
     {
         $builder = $this->documentManager->createAggregationBuilder(EpisodeDocument::class);

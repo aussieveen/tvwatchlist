@@ -40,7 +40,7 @@ class EpisodeSelector
 
     public function getShowFromRecentlyWatchedList(): string
     {
-        $seriesWithWatchableEpisodes = $this->episode->getUnfinishedSeries();
+        $seriesWithWatchableEpisodes = $this->episode->getSeriesWithWatchableEpisodes();
         $series = [];
         foreach ($seriesWithWatchableEpisodes as $s) {
             $series[] = $s['_id'];
