@@ -79,7 +79,7 @@ readonly class IngestProcess
                         $series['data']['image'],
                         $criteria->platform,
                         Episode::VALID_STATUSES[$series['data']['status']['id']],
-                        new DateTimeImmutable($episodeData['aired']),
+                        isset($episodeData['aired']) ? new DateTimeImmutable($episodeData['aired']) : null,
                         $criteria->universe,
                         $existingEpisode
                     );

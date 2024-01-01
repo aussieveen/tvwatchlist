@@ -1,11 +1,11 @@
-FROM php:8.3-fpm as app
+FROM php:8.3-fpm
 
 ENV OPCACHE_VALIDATE_TIMESTAMPS=0
 
 ARG MONGODB_VERSION=1.15.1
 
 RUN apt update \
-    && apt install -y zlib1g-dev g++ git libicu-dev zip libzip-dev zip libcurl4-openssl-dev pkg-config libssl-dev cron \
+    && apt install -y zlib1g-dev g++ git libicu-dev zip libzip-dev zip libcurl4-openssl-dev pkg-config libssl-dev cron nginx \
     && docker-php-ext-install intl opcache pdo pdo_mysql \
     && pecl install apcu \
     && docker-php-ext-enable apcu \
@@ -25,6 +25,10 @@ COPY docker/php/conf.d/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
 # Copy default settings
 COPY docker/php/conf.d/tvwatchlist.ini ${PHP_INI_DIR}/conf.d/tvwatchlist.ini
 
+WORKDIR /var/www/html
+
+COPY docker/nginx/conf.d/default.conf /etc/nginx/conf.d/
+
 CMD ["php-fpm"]
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
@@ -34,11 +38,15 @@ COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
 RUN set -xe; \
     mkdir ~/.composer;
 
+COPY app /var/www/html
+
 COPY cron/crontab /etc/cron.d/tvwatchlist
 RUN chmod 0644 /etc/cron.d/tvwatchlist \
     && crontab /etc/cron.d/tvwatchlist
 
 COPY docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
+
+VOLUME /var/www/html
 
 ENTRYPOINT ["docker-entrypoint"]

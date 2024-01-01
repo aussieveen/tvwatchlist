@@ -20,7 +20,7 @@ class EpisodeDocumentFactory
         string $poster,
         string $platform,
         string $status,
-        DateTimeInterface $airDate,
+        ?DateTimeInterface $airDate,
         string $universe,
         Episode $episodeDocument = null,
     ): Episode {

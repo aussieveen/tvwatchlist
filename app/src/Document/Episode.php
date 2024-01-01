@@ -111,8 +111,7 @@ class Episode
 
     #[Groups(['episode:read'])]
     #[ODM\Field(type: 'date')]
-    #[Assert\NotBlank]
-    public DateTimeInterface $airDate;
+    public ?DateTimeInterface $airDate;
 
     #[Groups(['episode:read','episode:write'])]
     #[ODM\Field(type: 'boolean')]

@@ -11,7 +11,7 @@ if [ "$1" = 'php-fpm' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
     chmod -R 777 var
     ./bin/console doctrine:mongodb:schema:update || echo "Warning: failed to update DB indexes"
 fi
-
+service nginx start
 service cron start
 
 exec docker-php-entrypoint "$@"
