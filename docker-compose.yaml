@@ -5,7 +5,7 @@ services:
     image: tvwatchlist-app:local
     build:
       context: .
-      dockerfile: ./docker/php/Dockerfile
+      dockerfile: ./docker/php/Dockerfile.dev
     environment:
       OPCACHE_VALIDATE_TIMESTAMPS: 1
     volumes:
@@ -17,17 +17,17 @@ services:
       - '${APP_PORT}:80'
     volumes:
       - ./app/public:/var/www/html/public
-      - ./docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/nginx/conf.d/default.dev.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - app
-#  database:
-#    container_name: database
-#    image: mongo:7
-#    environment:
-#      MONGO_INITDB_DATABASE: api
-#      MONGO_INITDB_ROOT_USERNAME: api
-#      MONGO_INITDB_ROOT_PASSWORD: password
-#    volumes:
-#      - db_data:/var/lib/mongodb/data:rw
+  database:
+    container_name: database
+    image: mongo:7
+    environment:
+      MONGO_INITDB_DATABASE: api
+      MONGO_INITDB_ROOT_USERNAME: api
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/mongodb/data:rw
 volumes:
   db_data: {}
