@@ -62,3 +62,58 @@ docker run
   -e 'TVDB_PIN'=<tvdb_pin>
   -p '<hostport>:80/tcp' tvwatchlist:latest
 ```
+
+## Development
+
+If you're planning to develop the application, you will need to build the container locally and then run it.
+
+You will also need to have NPM, Composer and PHP installed locally.
+
+### Steps
+
+#### 1. Configure the environment variables.
+
+There is a `.env.example` file in the root of the project. You will need to copy this to `.env` and update the APP_PORT value to whatever you want to access the application on.
+
+There is also a `.env.example` file in the `app` directory where you need to add your TVDB API key and PIN.
+
+#### 2. Install NPM dependencies.
+
+```bash
+npm install
+```
+
+#### 3. Spin up the application using `docker compose`.
+
+This will spin up the application and make it accessible in the browser. As part of this is will install the php dependencies and build the application.
+
+```bash
+docker compose up -d && docker compose logs -f
+```
+
+Once you see the following message in the logs, you can access the application at http://localhost:10000. 
+
+```
+tvwatchlist-app-1  | [04-Jan-2024 19:48:26] NOTICE: fpm is running, pid 1
+tvwatchlist-app-1  | [04-Jan-2024 19:48:26] NOTICE: ready to handle connections
+```
+
+`10000` is the default `APP_PORT` value in the `.env.example` file. The port number in the url needs to match the `APP_PORT` value in the `.env` file.
+
+#### 4. Build js and css files.
+
+Whilst the application is up and running, it is not yet ready to be used. You will need to build the js and css files.
+
+```bash
+npm run dev
+```
+
+This will build the files and then you will be able to use the application. 
+
+If you want to see any changes you make to the js and css files, you can re-run the build command or run the watch command.
+
+```bash
+npm run watch
+```
+
+This will watch for any changes to the js and css files and rebuild them when it detects a change.
