@@ -13,4 +13,3 @@
 !/app/webpack.config.js
 !/cron/
 !/docker/
-!/yarn.lock
