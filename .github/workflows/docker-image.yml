@@ -1,0 +1,24 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "ghaction-test" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: docker build -t tvwatchlist:testing -f docker/php/Dockerfile.prod . --platform=linux/amd64
+
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Docker Image
+        run: |
+          docker tag tvwatchlist:testing ${{ secrets.DOCKER_USERNAME }}/tvwatchlist:testing
+          docker push ${{ secrets.DOCKER_USERNAME }}/tvwatchlist:testing
