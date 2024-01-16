@@ -35,17 +35,17 @@ paths:
       responses:
         204:
           description: Series removed
-  /api/tvdb/search:
+  /api/tvdb/search/series:
     get:
       tags:
         - TVDB
-      summary: Find a show
-      operationId: tvdbSearch
+      summary: Find a TV series
+      operationId: tvdbSearchSeries
       parameters:
-        - name: showTitle
+        - name: seriesTitle
           in: query
           required: true
-          description: Show name
+          description: Series name
           example: The Flash
           schema:
             type: string
@@ -95,7 +95,7 @@ components:
             type: integer
           episode:
             type: integer
-          showTitle:
+          seriesTitle:
             type: string
           poster:
             type: string

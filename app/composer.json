@@ -2,7 +2,7 @@
   "type": "project",
   "license": "MIT",
   "require": {
-    "php": ">=8.2",
+    "php": ">=8.3",
     "ext-ctype": "*",
     "ext-iconv": "*",
     "api-platform/core": "^3",
@@ -46,13 +46,15 @@
     "symfony/webpack-encore-bundle": "^2.0",
     "symfony/yaml": "6.4.*",
     "twig/extra-bundle": "^2.12|^3.0",
-    "twig/twig": "^2.12|^3.0",
-    "ext-http": "*"
+    "twig/twig": "^2.12|^3.0"
   },
   "require-dev": {
     "ext-mongodb": "*",
     "api-platform/schema-generator": "^5.0",
+    "dg/bypass-finals": "^1.5",
     "mockery/mockery": "^1.6",
+    "overtrue/phplint": "^9",
+    "phpmd/phpmd": "^2.15.0",
     "phpunit/phpunit": "^10",
     "squizlabs/php_codesniffer": "*",
     "symfony/browser-kit": "6.4.*",
@@ -109,7 +111,13 @@
     ],
     "post-update-cmd": [
       "@auto-scripts"
-    ]
+    ],
+    "run-tests": "composer run-phpcs && composer run-phpunit && composer run-phpmd && composer run-phplint",
+    "run-phpcs": "vendor/bin/phpcs",
+    "run-phpmd": "vendor/bin/phpmd src text phpmd-src.xml --exclude src/Migrations/ && vendor/bin/phpmd tests text phpmd-tests.xml",
+    "run-phplint": "vendor/bin/phplint",
+    "run-phpunit": "vendor/bin/phpunit",
+    "run-coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-filter src/ --coverage-html coverage"
   },
   "conflict": {
     "symfony/symfony": "*"

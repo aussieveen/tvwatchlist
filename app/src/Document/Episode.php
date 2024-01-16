@@ -18,13 +18,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ODM\Document(
     indexes: [
         new ODM\Index(
-            keys: ['showTitle' => 'asc', 'season' => 'asc', 'episode' => 'asc'],
+            keys: ['seriesTitle' => 'asc', 'season' => 'asc', 'episode' => 'asc'],
             unique: true
         )
     ]
 )]
 #[ODM\HasLifecycleCallbacks]
-#[Unique(fields: ['showTitle', 'season', 'episode'], message: 'Show, Season and Episode combination should be unique')]
+#[Unique(
+    fields: ['seriesTitle', 'season', 'episode'],
+    message: 'Series, Season and Episode combination should be unique'
+)]
 #[ApiResource(
     operations: [
         new Get(),
@@ -83,7 +86,7 @@ class Episode
     #[Groups(['episode:read'])]
     #[ODM\Field(type: 'string')]
     #[Assert\NotBlank]
-    public string $showTitle;
+    public string $seriesTitle;
 
     #[ODM\Field(type: 'string')]
     #[Assert\NotBlank]

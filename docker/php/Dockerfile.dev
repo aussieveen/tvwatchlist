@@ -14,7 +14,9 @@ RUN apt update \
     && pecl install mongodb-${MONGODB_VERSION} \
     && docker-php-ext-enable mongodb \
     && pecl clear-cache \
-    && docker-php-ext-enable opcache;
+    && docker-php-ext-enable opcache \
+    && pecl install xdebug \
+    && docker-php-ext-enable xdebug;
 
 # Use the default production configuration
 RUN ln -s ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini \

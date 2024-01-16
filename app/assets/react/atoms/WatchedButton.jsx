@@ -26,7 +26,7 @@ export default function WatchedButton({id, refreshState}) {
                     "Content-Type": "application/ld+json"
                 },
                 body: JSON.stringify({
-                    showTitle: episode.showTitle,
+                    seriesTitle: episode.seriesTitle,
                     episodeTitle: episode.title,
                     airDate: episode.airDate,
                     universe: episode.universe ?? null,

@@ -10,13 +10,13 @@ export default function ShowUpNext({episodeData, refreshState}) {
         <div key={episodeData.id}>
             <div className= "component" id="secondary">
                 <Show
-                    title={episodeData.showTitle}
+                    title={episodeData.seriesTitle}
                 />
             </div>
             <div className= "component" id="primary">
                 <ShowPoster
                     image={episodeData.poster}
-                    title={episodeData.showTitle}
+                    title={episodeData.seriesTitle}
                 />
                 <Episode
                     airDate={episodeData.airDate}

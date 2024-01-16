@@ -1,4 +1,3 @@
-- [ ] Set up github actions to build docker image and push to dockerhub
 - [ ] Go through code and tidy up
 - [ ] Add unit testing
 

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Entity\Tvdb\Api;
+namespace App\Entity\Api\Tvdb\Response;
 
-class ShowFactory
+class SeriesFactory
 {
-    public function create(array $show): ?Show
+    public function create(array $show): ?Series
     {
         if (empty($show)) {
             return null;
@@ -16,7 +16,7 @@ class ShowFactory
             return null;
         }
 
-        return new Show(
+        return new Series(
             $show['tvdb_id'],
             $show['translations']['eng'] ?? $show['name'],
             $show['overviews']['eng'] ?? $show['overview'] ?? 'No overview available',

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Entity\Tvdb\Api\ApiQuery;
+namespace App\Entity\Api\Tvdb\Search;
 
-class ShowTitle
+class SeriesTitle
 {
     public function __construct(public readonly string $title)
     {

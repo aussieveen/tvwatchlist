@@ -25,6 +25,7 @@ yarn-error.log
 /phpunit.xml
 .phpunit.result.cache
 .phpunit.cache
+/coverage
 ###< phpunit/phpunit ###
 
 ###> squizlabs/php_codesniffer ###

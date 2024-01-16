@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Entity\Tvdb\Data\Ingest;
+namespace App\Entity\Ingest;
 
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -26,11 +26,12 @@ readonly class CriteriaFactory
             $requestBody['season'] ?? 1,
             $requestBody['episode'] ?? 1,
             $requestBody['platform'] ?? 'Plex',
-            strtolower($requestBody['universe']) ?? ''
+            strtolower($requestBody['universe'] ?? '')
         );
     }
 
-    public function build(string $seriesId, int $season, int $episode, string $platform, string $universe): Criteria {
+    public function build(string $seriesId, int $season, int $episode, string $platform, string $universe): Criteria
+    {
         return new Criteria($seriesId, $season, $episode, $platform, $universe);
     }
 }

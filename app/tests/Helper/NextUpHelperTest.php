@@ -2,31 +2,64 @@
 
 namespace App\Tests\Helper;
 
-use App\Helper\EpisodeSelector;
+use App\Helper\NextUpHelper;
 use App\Repository\Episode;
-use App\Repository\RecentlyWatched;
-use App\Repository\TvUniverses;
+use App\Repository\Series;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 
-class EpisodeSelectorTest extends TestCase
+class NextUpHelperTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    private EpisodeSelector $unit;
-    private RecentlyWatched $recentlyWatched;
+    private NextUpHelper $unit;
+    private Episode $episode;
+    private Series $series;
     public function setUp(): void
     {
-        $this->recentlyWatched = Mockery::mock(RecentlyWatched::class);
-        $tvUniverses = Mockery::mock(TvUniverses::class);
-        $episode = Mockery::mock(Episode::class);
+        $this->series = Mockery::mock(Series::class);
 
-        $this->unit = new EpisodeSelector(
-            $this->recentlyWatched,
-            $tvUniverses,
-            $episode
+        $this->unit = new NextUpHelper(
+            $this->series
         );
+    }
+
+    public function testGetSeriesNotOnRecentlyWatchedList(): void
+    {
+        $this->series->shouldReceive('getLatestTitleFromUniverse')
+            ->with('dc')
+            ->andReturn('legends of tomorrow');
+        $this->series->shouldReceive('getLatestTitleFromUniverse')
+            ->with('marvel')
+            ->andReturn('daredevil');
+
+        $this->series->shouldReceive('getTitlesRecentlyWatched')
+            ->andReturn(['the flash','arrow','jessica jones','schitts creek']);
+        $this->series->shouldReceive('getUniverses')
+            ->andReturn(['dc','marvel']);
+        $this->series->shouldReceive('getTitlesNotRecentlyWatchedAndNotInAnUniverse')
+            ->andReturn(['succession']);
+
+        for ($i = 0; $i < 100; $i++) {
+            $actual = $this->unit->getSeriesNotOnRecentlyWatchedList();
+
+            $this->assertNotSame('the flash', $actual);
+            $this->assertNotSame('arrow', $actual);
+            $this->assertNotSame('schitts creek', $actual);
+        }
+    }
+
+    public function testGetSeriesNotOnRecentlyWatchedListWithNoShows(): void
+    {
+        $this->series->expects('getUniverses')
+            ->andReturns([]);
+        $this->series->expects('getTitlesRecentlyWatched')
+            ->andReturn([]);
+        $this->series->expects('getTitlesNotRecentlyWatchedAndNotInAnUniverse')
+            ->andReturn([]);
+
+        $this->assertSame('', $this->unit->getSeriesNotOnRecentlyWatchedList());
     }
 
     /**
@@ -34,10 +67,12 @@ class EpisodeSelectorTest extends TestCase
      */
     public function testGetShowFromRecentlyWatchedList($watched, $expected): void
     {
-        $this->recentlyWatched->expects('getShowTitles')
+        $this->series->expects('getTitlesWithWatchableEpisodes')
+            ->andReturns(['show1', 'show2', 'show3', 'show4', 'show5']);
+        $this->series->expects('getTitlesRecentlyWatched')
             ->andReturns($watched);
 
-        $this->assertSame($expected, $this->unit->getShowFromRecentlyWatchedList());
+        $this->assertSame($expected, $this->unit->getSeriesFromRecentlyWatchedList());
     }
 
     public static function getRecentlyWatchedDataProvider(): array
@@ -57,6 +92,10 @@ class EpisodeSelectorTest extends TestCase
             ],
             'two same items in list' => [
                 'recentlyWatched' => ['show1', 'show1'],
+                'expected' => 'show1',
+            ],
+            'two items but one is not in watchable list' => [
+                'recentlyWatched' => ['show1', 'show6'],
                 'expected' => 'show1',
             ],
             'three unique items' => [

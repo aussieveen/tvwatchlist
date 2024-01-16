@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Cache;
 
 use App\Api\TvdbAuthClient;
+use Psr\Cache\InvalidArgumentException;
 use RuntimeException;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -17,25 +18,24 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 class TvdbApiTokenCache
 {
     public function __construct(
-        private readonly CacheInterface $cache,
-        private readonly TvdbAuthClient $tvdbClient
+        private CacheInterface $cache,
+        private TvdbAuthClient $tvdbClient
     ) {
     }
 
     public function getToken(): string
     {
-        return $this->cache->get('tvdb_token', function (ItemInterface $item) {
-            $item->expiresAfter(60 * 60 * 24 * 7); // 7 days
+        try {
+            return $this->cache->get('tvdb_token', function (ItemInterface $item) {
+                $item->expiresAfter(60 * 60 * 24 * 7); // 7 days
 
-            $response = $this->tvdbClient->login();
-            try {
+                $response = $this->tvdbClient->login();
                 $data = $response->toArray();
-            // @phpcs:ignore
-            } catch (ClientExceptionInterface | RedirectionExceptionInterface | DecodingExceptionInterface | ServerExceptionInterface | TransportExceptionInterface $e) {
-                throw new RuntimeException('Error while getting token', 0, $e);
-            }
 
-            return $data['data']['token'];
-        });
+                return $data['data']['token'];
+            });
+        } catch (InvalidArgumentException $e) {
+            throw new RuntimeException('Error getting token from cache', 0, $e);
+        }
     }
 }

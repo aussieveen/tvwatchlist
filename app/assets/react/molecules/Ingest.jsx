@@ -25,7 +25,7 @@ export default function Ingest() {
     function searchShows(string) {
         console.log("searching for " + string)
         setSearching(true);
-        fetch(`/api/tvdb/search?showTitle=`+string+`&type=series`, {
+        fetch(`/api/tvdb/search/series?seriesTitle=`+string, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json+ld"
@@ -38,6 +38,7 @@ export default function Ingest() {
             return response.json();
         })
         .then((showData) => {
+            console.log("Got show data " + showData);
             setShowData(showData);
         })
         .catch((err) => {
@@ -64,7 +65,7 @@ export default function Ingest() {
                 <div>Searching...</div>
             }
             {showData && showData.data.map((show) => (
-                <div key={show.id} className="ingestCard">
+                <div key={show.tvdbId} className="ingestCard">
                     <h3>{show.title}</h3>
                     <ShowPoster
                         image={show.poster}
@@ -73,7 +74,7 @@ export default function Ingest() {
                     <p>{show.overview}</p>
                     <Collapsible trigger="Ingest">
                         <IngestForm
-                            id={show.id}
+                            id={show.tvdbId}
                         />
                     </Collapsible>
                 </div>

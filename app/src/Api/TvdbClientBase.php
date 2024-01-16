@@ -6,5 +6,5 @@ namespace App\Api;
 
 class TvdbClientBase
 {
-    protected const BASE_URL = 'https://api4.thetvdb.com/v4/';
+    protected const TVDB_API_BASE_URL = 'https://api4.thetvdb.com/v4/';
 }

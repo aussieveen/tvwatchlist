@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Tvdb;
+namespace App\Controller\Api\Tvdb\Series;
 
-use App\Controller\Tvdb\Data\IngestProcess;
-use App\Entity\Tvdb\Data\Ingest\Criteria;
+use App\Entity\Ingest\Criteria;
+use App\Processor\Ingest as IngestProcessor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-class IngestRequest extends AbstractController
+class Ingest extends AbstractController
 {
     public function __construct(
         private readonly Criteria $criteria,
-        private readonly IngestProcess $ingestProcess
+        private readonly IngestProcessor $ingestProcess
     ) {
     }
 
@@ -32,7 +32,7 @@ class IngestRequest extends AbstractController
         return new JsonResponse([
             'message' => sprintf(
                 'Processing started for series: %s from Season: %d, Episode:%d',
-                $this->criteria->seriesId,
+                $this->criteria->tvdbSeriesId,
                 $this->criteria->season,
                 $this->criteria->episode
             ),
