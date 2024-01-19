@@ -25,19 +25,19 @@ class TvdbSeriesDataProvider
         int $fromSeason = 1,
         int $fromEpisode = 1
     ): ?Series {
-        $tvdbSeriesData = json_decode($this->client->seriesExtended($tvdbSeriesId)->getContent(), true);
-        if ($tvdbSeriesData['status'] !== 'success') {
+        $tvdbApiSeriesData = json_decode($this->client->seriesExtended($tvdbSeriesId)->getContent(), true);
+        if ($tvdbApiSeriesData['status'] !== 'success') {
             return null;
         }
 
         $series = new Series(
             $tvdbSeriesId,
-            $tvdbSeriesData['data']['name'],
-            $tvdbSeriesData['data']['image'],
-            $tvdbSeriesData['data']['status']['id']
+            $tvdbApiSeriesData['data']['name'],
+            $tvdbApiSeriesData['data']['image'],
+            $tvdbApiSeriesData['data']['status']['id']
         );
 
-        foreach ($tvdbSeriesData['data']['seasons'] as $seasonData) {
+        foreach ($tvdbApiSeriesData['data']['seasons'] as $seasonData) {
             if (
                 $seasonData['type']['id'] !== self::REGULAR_SEASON_TYPE
                 || $seasonData['number'] < $fromSeason

@@ -37,17 +37,18 @@ class UpdateUnfinishedSeries extends Command
 
         foreach ($ongoingSeries as $series) {
             // Find the first episode for the series that we've already ingested
-            $firstIngestedEpisode = $this->episodeRepository->getFirstEpisodeForSeries($series);
-            if ($firstIngestedEpisode === null) {
+            $firstEpisode = $this->episodeRepository->getFirstEpisodeForSeries($series);
+            if ($firstEpisode === null) {
                 continue;
             }
 
+            // Build the criteria for the series
             $criteria = new Criteria(
-                $firstIngestedEpisode->tvdbSeriesId,
-                $firstIngestedEpisode->season,
-                $firstIngestedEpisode->episode,
-                $firstIngestedEpisode->platform,
-                $firstIngestedEpisode->universe
+                $firstEpisode->tvdbSeriesId,
+                $firstEpisode->season,
+                $firstEpisode->episode,
+                $firstEpisode->platform,
+                $firstEpisode->universe
             );
 
             //Ingest the series

@@ -22,12 +22,13 @@ class NextUpController extends AbstractController
     public function search(): JsonResponse
     {
         $seriesTitle = $this->nextUpEpisodeHelper->getSeriesNotOnRecentlyWatchedList();
+
         if (!$seriesTitle) {
             $seriesTitle = $this->nextUpEpisodeHelper->getSeriesFromRecentlyWatchedList();
         }
 
-        $episode = $this->episode->getLatestUnwatchedFromSeries($seriesTitle);
-
-        return $this->json($episode ?? []);
+        return $seriesTitle
+            ? $this->json($this->episode->getLatestUnwatchedFromSeries($seriesTitle) ?? [])
+            : $this->json([]);
     }
 }

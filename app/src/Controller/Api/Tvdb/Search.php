@@ -35,16 +35,16 @@ class Search extends AbstractController
             ]);
         }
 
-        $shows = [];
+        $series = [];
 
         foreach ($body['data'] as $show) {
-            $shows[] = $this->seriesFactory->create($show);
+            $series[] = $this->seriesFactory->create($show);
         }
 
         return new JsonResponse([
             'status' => 200,
             'title' => 'OK',
-            'data' => array_values(array_filter($shows))
+            'data' => array_values(array_filter($series))
         ]);
     }
 }

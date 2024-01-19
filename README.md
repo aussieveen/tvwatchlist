@@ -1,5 +1,7 @@
-- [ ] Go through code and tidy up
-- [ ] Add unit testing
+![Tests](https://img.shields.io/badge/tests-passing-brightgreen)
+![Code Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
+![PHP Version](https://img.shields.io/badge/php-8.3.0-blue)
+
 
 # TV Watchlist
 

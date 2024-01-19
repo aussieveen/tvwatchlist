@@ -57,11 +57,21 @@ class NextUpControllerTest extends TestCase
         $this->assertEquals(json_encode($this->episodeDocument), $response->getContent());
     }
 
+    public function testSearchReturnsJsonResponseWhenItCantFindEpisodeFromRepository(): void
+    {
+        $this->nextUpEpisodeHelper->expects('getSeriesNotOnRecentlyWatchedList')->andReturn('');
+        $this->nextUpEpisodeHelper->expects('getSeriesFromRecentlyWatchedList')->andReturn('series title');
+        $this->episodeRepository->expects('getLatestUnwatchedFromSeries')
+            ->with('series title')->andReturn(null);
+        $response = $this->unit->search();
+        $this->assertEquals('[]', $response->getContent());
+    }
+
     public function testSearchReturnsJsonResponseFromEmptyList(): void
     {
         $this->nextUpEpisodeHelper->expects('getSeriesNotOnRecentlyWatchedList')->andReturn('');
         $this->nextUpEpisodeHelper->expects('getSeriesFromRecentlyWatchedList')->andReturn('');
-        $this->episodeRepository->expects('getLatestUnwatchedFromSeries')->with('')->andReturnNull();
+        $this->episodeRepository->shouldNotReceive('getLatestUnwatchedFromSeries');
         $response = $this->unit->search();
         $this->assertEquals('[]', $response->getContent());
     }
