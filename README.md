@@ -1,5 +1,6 @@
 <!-- BEGIN TEST RESULTS --> 
-[![Tests](https://img.shields.io/badge/TESTS-failing-red)](https://github.com/aussieveen/tvwatchlist/actions/runs/7582473247)
+[![Test](https://github.com/aussieveen/tvwatchlist/actions/workflows/testing-ci.yml/badge.svg?branch=ghaction-test)](https://github.com/aussieveen/tvwatchlist/actions/workflows/testing-ci.yml)
+[![Test](https://github.com/PHPCSStandards/PHP_CodeSniffer/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/PHPCSStandards/PHP_CodeSniffer/actions/workflows/test.yml)
 <!-- END TEST RESULTS -->
 
 # TV Watchlist

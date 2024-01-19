@@ -67,7 +67,7 @@ class NextUpHelper
         // Return the last unique show in the list.
         $upNext = $filteredShows[0];
         $seenBefore = [$filteredShows[0]];
-        for($i = 1; $i < count($filteredShows); $i++) {
+        for ($i = 1; $i < count($filteredShows); $i++) {
             if (!in_array($filteredShows[$i], $seenBefore)) {
                 $upNext = $filteredShows[$i];
                 $seenBefore[] = $filteredShows[$i];

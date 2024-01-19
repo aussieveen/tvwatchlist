@@ -16,9 +16,9 @@ class SwaggerDecoratorTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    private const string CONFIG_FILE_PATH = __DIR__ . '/../config/';
+    private const CONFIG_FILE_PATH = __DIR__ . '/../config/';
 
-    private const array DEFAULT_DOCS = [
+    private const DEFAULT_DOCS = [
         'basePath' => '/',
         'info' => ['title' => 'Default Doc', 'version' => '1.0']
     ];

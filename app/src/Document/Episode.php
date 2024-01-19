@@ -47,13 +47,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 class Episode
 {
-    public final const int STATUS_AIRING = 1;
-    public final const int STATUS_FINISHED = 2;
-    public final const int STATUS_UPCOMING = 3;
-    public final const array VALID_STATUSES = [
+    public final const STATUS_AIRING = 1;
+    public final const STATUS_FINISHED = 2;
+    public final const STATUS_UPCOMING = 3;
+    public final const VALID_STATUSES = [
         self::STATUS_AIRING => 'airing', self::STATUS_FINISHED => 'finished', self::STATUS_UPCOMING => 'upcoming'
     ];
-    public final const array AVAILABLE_PLATFORMS = ['Plex','Netflix','Disney Plus','Amazon Prime'];
+    public final const AVAILABLE_PLATFORMS = ['Plex','Netflix','Disney Plus','Amazon Prime'];
 
     #[Groups(['episode:read','identifier'])]
     #[ODM\Id(type: 'integer', strategy: 'INCREMENT')]
