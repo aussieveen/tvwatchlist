@@ -27,4 +27,4 @@ jobs:
       - name: Run tests
         run: |
           cd app
-          composer run-tests
+          composer run-phpunit
