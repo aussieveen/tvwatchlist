@@ -27,4 +27,4 @@ jobs:
       - name: Run tests
         run: |
           cd app
-          vendor/bin/phpunit --coverage-text --colors=never --log-junit test-results/junit.xml
+          composer run-tests
