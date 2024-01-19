@@ -1,8 +1,7 @@
-<!-- BEGIN BADGES -->
-Test results: [![Tests](https://img.shields.io/badge/tests-passing-brightgreen)](https://github.com/aussieveen/tvwatchlist/actions/runs/7582473247)
-Test results: [![Tests](https://img.shields.io/badge/tests-passing-brightgreen)](https://github.com/aussieveen/tvwatchlist/actions/runs/7582660308)
-![PHP Version](https://img.shields.io/badge/php-8.3.0-blue)
-<!-- END BADGES -->
+<!-- BEGIN TEST RESULTS --> 
+[![Tests](https://img.shields.io/badge/TESTS-failing-red)](https://github.com/aussieveen/tvwatchlist/actions/runs/7582473247)
+<!-- END TEST RESULTS -->
+
 # TV Watchlist
 
 This is a single page web application to allow a user to create a watchlist of TV shows.
