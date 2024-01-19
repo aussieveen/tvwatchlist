@@ -28,8 +28,3 @@ jobs:
         run: |
           cd app
           vendor/bin/phpunit --coverage-text --colors=never --log-junit test-results/junit.xml
-
-      - name: Artifact run id
-        name: Trigger
-        id: trigger
-        run: echo "workflow_run_url=https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> $GITHUB_ENV
