@@ -20,10 +20,14 @@ jobs:
           ini-values: opcache.enable=1
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
+        run: |
+          cd app
+          composer install --prefer-dist --no-progress --no-suggest
 
       - name: Run tests
-        run: vendor/bin/phpunit --coverage-text --colors=never --log-junit test-results/junit.xml
+        run: |
+          cd app
+          vendor/bin/phpunit --coverage-text --colors=never --log-junit test-results/junit.xml
 
       - name: Upload test results
         uses: actions/upload-artifact@v2
