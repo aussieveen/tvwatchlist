@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Get current date
         run: |
-          $DATE_TIME=& Get-Date -format yyyyMMddhhmm
+          $DATE_TIME="v$(date +'%Y%m%d%H%M')"
           echo "DATE_TIME=$DATE_TIME" >> $GITHUB_ENV
       - name: Show datetime
         run: echo $DATE_TIME
