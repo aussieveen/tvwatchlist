@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api;
 
-use http\Exception\RuntimeException;
+use RuntimeException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
@@ -12,9 +12,9 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 class TvdbAuthClient extends TvdbClientBase
 {
     public function __construct(
-        private readonly HttpClientInterface $httpClient,
-        private readonly string $apikey,
-        private readonly string $pin
+        private HttpClientInterface $httpClient,
+        private string $apikey,
+        private string $pin
     ) {
     }
 
@@ -23,7 +23,7 @@ class TvdbAuthClient extends TvdbClientBase
         try {
             return $this->httpClient->request(
                 'POST',
-                self::BASE_URL . 'login',
+                self::TVDB_API_BASE_URL . 'login',
                 [
                     'json' => [
                         'apikey' => $this->apikey,

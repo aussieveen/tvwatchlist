@@ -1,6 +1,6 @@
-- [ ] Set up github actions to build docker image and push to dockerhub
-- [ ] Go through code and tidy up
-- [ ] Add unit testing
+<!-- BEGIN TEST RESULTS --> 
+[![Test](https://github.com/aussieveen/tvwatchlist/actions/workflows/testing-ci.yml/badge.svg?branch=main)](https://github.com/aussieveen/tvwatchlist/actions/workflows/testing-ci.yml)
+<!-- END TEST RESULTS -->
 
 # TV Watchlist
 

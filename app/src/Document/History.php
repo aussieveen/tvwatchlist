@@ -32,6 +32,9 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     order: ['id' => 'DESC']
 )]
+/**
+ * @codeCoverageIgnore
+ */
 class History
 {
     #[ODM\Id(type: 'integer', strategy: 'INCREMENT')]
@@ -45,7 +48,7 @@ class History
     #[Groups(['history:read','history:write'])]
     #[ODM\Field(type: 'string')]
     #[Assert\NotBlank]
-    public string $showTitle;
+    public string $seriesTitle;
 
     #[Groups(['history:read','history:write'])]
     #[ODM\Field(type: 'string')]

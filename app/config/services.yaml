@@ -27,13 +27,13 @@ services:
             $pin: '%env(TVDB_PIN)%'
 
 
-    App\Entity\Tvdb\Api\ApiQuery\ShowTitle:
-        factory: ['@App\Entity\Tvdb\Api\ApiQuery\ShowTitleFactory', 'buildFromRequestStack' ]
+    App\Entity\Api\Tvdb\Search\SeriesTitle:
+        factory: ['@App\Entity\Api\Tvdb\Search\SeriesTitleFactory', 'buildFromRequestStack' ]
         arguments:
             $requestStack: '@request_stack'
 
-    App\Entity\Tvdb\Data\Ingest\Criteria:
-        factory: [ '@App\Entity\Tvdb\Data\Ingest\CriteriaFactory', 'buildFromRequestStack' ]
+    App\Entity\Ingest\Criteria:
+        factory: [ '@App\Entity\Ingest\CriteriaFactory', 'buildFromRequestStack' ]
         arguments:
             $requestStack: '@request_stack'
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api;
 
-use App\Entity\Tvdb\Api\ApiQuery\ShowTitle;
 use App\Security\TvdbTokenProvider;
 use RuntimeException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -14,20 +13,20 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 class TvdbQueryClient extends TvdbClientBase
 {
     public function __construct(
-        private readonly HttpClientInterface $httpClient,
-        private readonly TvdbTokenProvider $tokenProvider
+        private HttpClientInterface $httpClient,
+        private TvdbTokenProvider $tokenProvider
     ) {
     }
 
-    public function search(ShowTitle $showTitle): ResponseInterface
+    public function search(string $seriesTitle): ResponseInterface
     {
         try {
             return $this->httpClient->request(
                 'GET',
-                self::BASE_URL . 'search',
+                self::TVDB_API_BASE_URL . 'search',
                 [
                     'query' => [
-                        'query' => $showTitle->title,
+                        'query' => $seriesTitle,
                         'type' => 'series'
                     ],
                     'headers' => [
@@ -36,7 +35,7 @@ class TvdbQueryClient extends TvdbClientBase
                 ]
             );
         } catch (TransportExceptionInterface $e) {
-            throw new RuntimeException('Error while searching for show', 0, $e);
+            throw new RuntimeException('Error while searching', 0, $e);
         }
     }
 
@@ -45,7 +44,7 @@ class TvdbQueryClient extends TvdbClientBase
         try {
             return $this->httpClient->request(
                 'GET',
-                self::BASE_URL . 'series/' . $seriesId . '/extended',
+                self::TVDB_API_BASE_URL . 'series/' . $seriesId . '/extended',
                 [
                     'headers' => [
                         'Authorization' => 'Bearer ' . $this->tokenProvider->getToken()
@@ -53,7 +52,7 @@ class TvdbQueryClient extends TvdbClientBase
                 ]
             );
         } catch (TransportExceptionInterface $e) {
-            throw new RuntimeException('Error while getting series', 0, $e);
+            throw new RuntimeException('Error while getting extended series data', 0, $e);
         }
     }
 
@@ -62,7 +61,7 @@ class TvdbQueryClient extends TvdbClientBase
         try {
             return $this->httpClient->request(
                 'GET',
-                self::BASE_URL . 'seasons/' . $seasonId . '/extended',
+                self::TVDB_API_BASE_URL . 'seasons/' . $seasonId . '/extended',
                 [
                     'headers' => [
                         'Authorization' => 'Bearer ' . $this->tokenProvider->getToken()
@@ -70,7 +69,7 @@ class TvdbQueryClient extends TvdbClientBase
                 ]
             );
         } catch (TransportExceptionInterface $e) {
-            throw new RuntimeException('Error while getting season data', 0, $e);
+            throw new RuntimeException('Error while getting extended season data', 0, $e);
         }
     }
 }
