@@ -1,6 +1,5 @@
 <!-- BEGIN TEST RESULTS --> 
-[![Test](https://github.com/aussieveen/tvwatchlist/actions/workflows/testing-ci.yml/badge.svg?branch=ghaction-test)](https://github.com/aussieveen/tvwatchlist/actions/workflows/testing-ci.yml)
-[![Test](https://github.com/PHPCSStandards/PHP_CodeSniffer/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/PHPCSStandards/PHP_CodeSniffer/actions/workflows/test.yml)
+[![Test](https://github.com/aussieveen/tvwatchlist/actions/workflows/testing-ci.yml/badge.svg?branch=main)](https://github.com/aussieveen/tvwatchlist/actions/workflows/testing-ci.yml)
 <!-- END TEST RESULTS -->
 
 # TV Watchlist
