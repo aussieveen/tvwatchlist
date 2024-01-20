@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd app
-          composer install --prefer-dist --no-progress --no-suggest
+          composer run-tests
 
       - name: Run tests
         run: |

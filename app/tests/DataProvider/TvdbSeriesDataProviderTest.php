@@ -18,21 +18,21 @@ class TvdbSeriesDataProviderTest extends TestCase
     private TvdbSeriesDataProvider $unit;
     private TvdbQueryClient $client;
     private TvdbEpisodeData $episodeDataProcessor;
-    private ResponseInterface $seriesResponseInterface;
-    private ResponseInterface $seasonResponseInterface;
+    private ResponseInterface $seriesResponse;
+    private ResponseInterface $seasonResponse;
 
     public function setUp(): void
     {
-        $this->seriesResponseInterface = Mockery::mock(ResponseInterface::class);
-        $this->seasonResponseInterface = Mockery::mock(ResponseInterface::class);
+        $this->seriesResponse = Mockery::mock(ResponseInterface::class);
+        $this->seasonResponse = Mockery::mock(ResponseInterface::class);
         $this->client = Mockery::mock(TvdbQueryClient::class);
         $this->client->allows('seriesExtended')
             ->with(123)
-            ->andReturn($this->seriesResponseInterface)
+            ->andReturn($this->seriesResponse)
             ->byDefault();
         $this->client->allows('seasonExtended')
             ->with(456)
-            ->andReturn($this->seasonResponseInterface)
+            ->andReturn($this->seasonResponse)
             ->byDefault();
 
         $this->episodeDataProcessor = new TvdbEpisodeData();
@@ -43,7 +43,7 @@ class TvdbSeriesDataProviderTest extends TestCase
 
     public function testGetSeriesReturnsNullWhenStatusNotSuccess(): void
     {
-        $this->seriesResponseInterface->expects('getContent')->andReturn(json_encode([
+        $this->seriesResponse->expects('getContent')->andReturn(json_encode([
             'status' => 'failure',
         ]));
 
@@ -55,7 +55,7 @@ class TvdbSeriesDataProviderTest extends TestCase
      */
     public function testGetSeriesReturnBaseInfo(array $invalidData, int $fromSeason = 1): void
     {
-        $this->seriesResponseInterface->expects('getContent')->andReturn(json_encode([
+        $this->seriesResponse->expects('getContent')->andReturn(json_encode([
             'status' => 'success',
             'data' => array_merge([
                 'id' => '123',
@@ -111,7 +111,7 @@ class TvdbSeriesDataProviderTest extends TestCase
 
     public function testGetSeriesReturnsNullWhenSeasonsResponseNotSuccess(): void
     {
-        $this->seriesResponseInterface->expects('getContent')->andReturn(json_encode([
+        $this->seriesResponse->expects('getContent')->andReturn(json_encode([
             'status' => 'success',
             'data' => [
                 'id' => '123',
@@ -132,7 +132,7 @@ class TvdbSeriesDataProviderTest extends TestCase
             ],
         ]));
 
-        $this->seasonResponseInterface->expects('getContent')->andReturn(json_encode([
+        $this->seasonResponse->expects('getContent')->andReturn(json_encode([
             'status' => 'failure',
         ]));
 
@@ -141,7 +141,7 @@ class TvdbSeriesDataProviderTest extends TestCase
 
     public function testGetSeriesReturnsExpectedSeries(): void
     {
-        $this->seriesResponseInterface->expects('getContent')->andReturn(json_encode([
+        $this->seriesResponse->expects('getContent')->andReturn(json_encode([
             'status' => 'success',
             'data' => [
                 'id' => '123',
@@ -169,7 +169,7 @@ class TvdbSeriesDataProviderTest extends TestCase
             ],
         ]));
 
-        $this->seasonResponseInterface->expects('getContent')
+        $this->seasonResponse->expects('getContent')
             ->andReturn(json_encode([
             'status' => 'success',
             'data' => [
@@ -188,10 +188,10 @@ class TvdbSeriesDataProviderTest extends TestCase
 
         $this->client->expects('seasonExtended')
             ->with('456')
-            ->andReturn($this->seasonResponseInterface);
+            ->andReturn($this->seasonResponse);
 
-        $secondSeasonResponseInterface = Mockery::mock(ResponseInterface::class);
-        $secondSeasonResponseInterface->expects('getContent')
+        $secondSeason = Mockery::mock(ResponseInterface::class);
+        $secondSeason->expects('getContent')
             ->andReturn(json_encode([
                 'status' => 'success',
                 'data' => [
@@ -210,7 +210,7 @@ class TvdbSeriesDataProviderTest extends TestCase
 
         $this->client->expects('seasonExtended')
             ->with('789')
-            ->andReturn($secondSeasonResponseInterface);
+            ->andReturn($secondSeason);
 
         $actual = $this->unit->getSeries('123');
 

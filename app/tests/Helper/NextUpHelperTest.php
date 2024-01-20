@@ -14,7 +14,6 @@ class NextUpHelperTest extends TestCase
     use MockeryPHPUnitIntegration;
 
     private NextUpHelper $unit;
-    private Episode $episode;
     private Series $series;
     public function setUp(): void
     {
