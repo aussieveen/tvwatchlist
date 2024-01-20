@@ -24,9 +24,9 @@ jobs:
       - name: Install dependencies
         run: |
           cd app
-          composer run-tests
+          composer install --prefer-dist --no-progress --no-suggest
 
       - name: Run tests
         run: |
           cd app
-          composer run-phpunit
+          composer run-tests
