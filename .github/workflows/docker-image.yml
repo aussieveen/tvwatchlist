@@ -11,14 +11,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=datetime::$(date +'%Y%m%d%H%M')"
       - uses: actions/checkout@v3
       - name: Build the Docker image
-        run: docker build -t tvwatchlist:latest -f docker/php/Dockerfile.prod . --platform=linux/amd64
+        run: docker build -t tvwatchlist:${{ steps.date.outputs.datetime }} -f docker/php/Dockerfile.prod . --platform=linux/amd64
 
       - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and Push Docker Image
         run: |
-          docker tag tvwatchlist:latest ${{ secrets.DOCKER_USERNAME }}/tvwatchlist:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/tvwatchlist:latest
+          docker tag tvwatchlist:${{ steps.date.outputs.datetime }} ${{ secrets.DOCKER_USERNAME }}/tvwatchlist:${{ steps.date.outputs.datetime }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/tvwatchlist:${{ steps.date.outputs.datetime }}

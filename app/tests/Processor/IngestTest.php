@@ -21,17 +21,17 @@ class IngestTest extends TestCase
 
     private Ingest $unit;
     private DocumentManager $documentManager;
-    private TvdbSeriesDataProvider $tvdbSeriesDataProvider;
+    private TvdbSeriesDataProvider $seriesDataProvider;
 
     public function setUp(): void
     {
         $this->documentManager = Mockery::mock(DocumentManager::class);
 
-        $this->tvdbSeriesDataProvider = Mockery::mock(TvdbSeriesDataProvider::class);
+        $this->seriesDataProvider = Mockery::mock(TvdbSeriesDataProvider::class);
 
         $this->unit = new Ingest(
             $this->documentManager,
-            $this->tvdbSeriesDataProvider
+            $this->seriesDataProvider
         );
     }
 
@@ -40,13 +40,16 @@ class IngestTest extends TestCase
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Series not found');
 
-        $this->tvdbSeriesDataProvider->expects('getSeries')
+        $this->seriesDataProvider->expects('getSeries')
             ->with('tvdbId', 1, 1)
             ->andReturn(null);
 
         $this->unit->ingest(new Criteria('tvdbId', 1, 1, '', ''));
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
     public function testIngestPersistsNewEpisode(): void
     {
         $series = new Series(
@@ -64,7 +67,7 @@ class IngestTest extends TestCase
             1
         ));
 
-        $this->tvdbSeriesDataProvider->expects('getSeries')
+        $this->seriesDataProvider->expects('getSeries')
             ->with('tvdbId', 1, 1)
             ->andReturn($series);
 
@@ -116,7 +119,7 @@ class IngestTest extends TestCase
             1
         ));
 
-        $this->tvdbSeriesDataProvider->expects('getSeries')
+        $this->seriesDataProvider->expects('getSeries')
             ->with('tvdbId', 1, 1)
             ->andReturn($series);
 
