@@ -61,7 +61,7 @@ export default function IngestForm({id}) {
                 <option value="Disney Plus">Disney Plus</option>
                 <option value="Amazon Prime">Amazon Prime</option>
             </select>
-            <input placeholder={"TV Universe"} name={"universe"} type={"text"} onChange={(e) => setIngestUniverse(e.target.value)}/>
+            <input className={"universeText"} placeholder={"TV Universe"} name={"universe"} type={"text"} onChange={(e) => setIngestUniverse(e.target.value)}/>
             <button className={"btn btn-lg btn-block btn-dark " + ingestDisabled} type="button" onClick={() => ingestShow(id)}>
                 {ingestState}
             </button>

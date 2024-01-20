@@ -57,15 +57,15 @@ export default function Ingest() {
             {error && (
                 <div>{`There is a problem fetching the post data - ${error}`}</div>
             )}
-            <div>
+            <div className={"bento"}>
                 <h1>Ingest TV series</h1>
                 <input value={inputValue} name="search" onChange={handleChange} placeholder="Search for tv show to ingest"/>
             </div>
             {searching &&
-                <div>Searching...</div>
+                <div className={"searching bento"}>Searching...</div>
             }
             {showData && showData.data.map((show) => (
-                <div key={show.tvdbId} className="ingestCard">
+                <div key={show.tvdbId} className="ingestCard bento">
                     <h3>{show.title}</h3>
                     <ShowPoster
                         image={show.poster}

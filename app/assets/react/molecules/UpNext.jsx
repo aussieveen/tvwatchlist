@@ -42,7 +42,7 @@ export default function UpNext() {
     useEffect(() => { refreshState(); }, []);
 
     return (
-        <div>
+        <div className={"bento"}>
             {showIngestLink && (
                 <h1 id="nothing-found">No shows found</h1>
             )}
