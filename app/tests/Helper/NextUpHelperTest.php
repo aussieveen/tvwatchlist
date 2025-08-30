@@ -3,8 +3,8 @@
 namespace App\Tests\Helper;
 
 use App\Helper\NextUpHelper;
-use App\Repository\Episode;
-use App\Repository\Series;
+use App\Repository\EpisodeRepository;
+use App\Repository\SeriesRepository;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
@@ -14,10 +14,10 @@ class NextUpHelperTest extends TestCase
     use MockeryPHPUnitIntegration;
 
     private NextUpHelper $unit;
-    private Series $series;
+    private SeriesRepository $series;
     public function setUp(): void
     {
-        $this->series = Mockery::mock(Series::class);
+        $this->series = Mockery::mock(SeriesRepository::class);
 
         $this->unit = new NextUpHelper(
             $this->series

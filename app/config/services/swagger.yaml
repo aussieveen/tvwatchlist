@@ -19,14 +19,14 @@ paths:
   /api/series/{seriesId}:
     delete:
       tags:
-        - Series
+        - SeriesRepository
       summary: Remove a series
       operationId: removeSeries
       parameters:
         - name: seriesId
           in: path
           required: true
-          description: TVDB Series ID
+          description: TVDB SeriesRepository ID
           example: 987123
           schema:
             type: string
@@ -34,7 +34,7 @@ paths:
         - application/json
       responses:
         204:
-          description: Series removed
+          description: SeriesRepository removed
   /api/tvdb/search/series:
     get:
       tags:
@@ -45,7 +45,7 @@ paths:
         - name: seriesTitle
           in: query
           required: true
-          description: Series name
+          description: SeriesRepository name
           example: The Flash
           schema:
             type: string
@@ -64,7 +64,7 @@ paths:
     post:
       tags:
         - TVDB
-      summary: Ingest Series
+      summary: Ingest SeriesRepository
       operationId: tvdbIngestSeries
       requestBody:
         description: Optional description in *Markdown*

@@ -9,7 +9,7 @@ export default function UpNext() {
     const [showIngestLink, setShowIngestLink] = useState(false);
 
     function refreshState() {
-        fetch(`/api/nextup`, {
+        fetch(`/api/episode/nextup`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json+ld"

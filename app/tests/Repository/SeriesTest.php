@@ -4,7 +4,7 @@ namespace App\Tests\Repository;
 
 use App\Document\Episode as EpisodeDocument;
 use App\Document\History;
-use App\Repository\Series;
+use App\Repository\SeriesRepository;
 use DG\BypassFinals;
 use Doctrine\ODM\MongoDB\Aggregation\Aggregation;
 use Doctrine\ODM\MongoDB\Aggregation\Builder;
@@ -19,7 +19,7 @@ class SeriesTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    private Series $unit;
+    private SeriesRepository $unit;
     private DocumentManager $documentManager;
     private Builder $aggregationBuilder;
 
@@ -35,7 +35,7 @@ class SeriesTest extends TestCase
             ->andReturn($this->aggregationBuilder)
             ->byDefault();
 
-        $this->unit = new Series($this->documentManager);
+        $this->unit = new SeriesRepository($this->documentManager);
     }
 
     /**

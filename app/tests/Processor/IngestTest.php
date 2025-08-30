@@ -38,7 +38,7 @@ class IngestTest extends TestCase
     public function testIngestThrowsRuntimeException(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Series not found');
+        $this->expectExceptionMessage('SeriesRepository not found');
 
         $this->seriesDataProvider->expects('getSeries')
             ->with('tvdbId', 1, 1)
@@ -54,13 +54,13 @@ class IngestTest extends TestCase
     {
         $series = new Series(
             '123',
-            'Test Series',
+            'Test SeriesRepository',
             'https://www.thetvdb.com/banners/posters/5b3e0b2d9d0c5.jpg',
             1
         );
         $series->addEpisode(new Episode(
             '1',
-            'Test Episode',
+            'Test EpisodeRepository',
             'Test Overview',
             '2021-01-01',
             1,
@@ -84,11 +84,11 @@ class IngestTest extends TestCase
             ->with(Mockery::on(function ($episode) {
                 return $episode instanceof EpisodeDocument
                     && $episode->tvdbEpisodeId === '1'
-                    && $episode->title === 'Test Episode'
+                    && $episode->title === 'Test EpisodeRepository'
                     && $episode->description === 'Test Overview'
                     && $episode->season === 1
                     && $episode->episode === 1
-                    && $episode->seriesTitle === 'Test Series'
+                    && $episode->seriesTitle === 'Test SeriesRepository'
                     && $episode->tvdbSeriesId === '123'
                     && $episode->poster === 'https://www.thetvdb.com/banners/posters/5b3e0b2d9d0c5.jpg'
                     && $episode->universe === ''
@@ -106,13 +106,13 @@ class IngestTest extends TestCase
     {
         $series = new Series(
             '123',
-            'Test Series',
+            'Test SeriesRepository',
             'https://www.thetvdb.com/banners/posters/5b3e0b2d9d0c5.jpg',
             2
         );
         $series->addEpisode(new Episode(
             '1',
-            'Test Episode',
+            'Test EpisodeRepository',
             'Test Overview',
             '2021-01-01',
             1,

@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace App\Document;
 
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Patch;
+use App\Repository\EpisodeRepository;
 use DateTimeInterface;
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
@@ -16,6 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ODM\Document(
+    repositoryClass: EpisodeRepository::class,
     indexes: [
         new ODM\Index(
             keys: ['seriesTitle' => 'asc', 'season' => 'asc', 'episode' => 'asc'],
@@ -26,24 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ODM\HasLifecycleCallbacks]
 #[Unique(
     fields: ['seriesTitle', 'season', 'episode'],
-    message: 'Series, Season and Episode combination should be unique'
-)]
-#[ApiResource(
-    operations: [
-        new Get(),
-        new GetCollection(),
-        new Patch(),
-        new Delete()
-    ],
-    normalizationContext: [
-        'groups' => ['episode:read'],
-        'skip_null_values' => true,
-        'allow_extra_attributes' => false
-    ],
-    denormalizationContext: [
-        'groups' => ['episode:write']
-    ],
-    order: ['airDate' => 'ASC']
+    message: 'SeriesRepository, Season and EpisodeRepository combination should be unique'
 )]
 class Episode
 {

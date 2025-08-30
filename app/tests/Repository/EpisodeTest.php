@@ -3,7 +3,7 @@
 namespace App\Tests\Repository;
 
 use App\Document\Episode as EpisodeDocument;
-use App\Repository\Episode;
+use App\Repository\EpisodeRepository;
 use DG\BypassFinals;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Iterator\Iterator;
@@ -17,7 +17,7 @@ class EpisodeTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    private Episode $unit;
+    private EpisodeRepository $unit;
     private DocumentManager $documentManager;
     private Builder $queryBuilder;
 
@@ -33,7 +33,7 @@ class EpisodeTest extends TestCase
             ->with(EpisodeDocument::class)
             ->andReturn($this->queryBuilder);
 
-        $this->unit = new Episode($this->documentManager);
+        $this->unit = new EpisodeRepository($this->documentManager);
     }
 
     public function testGetLatestUnwatchedFromSeriesReturnEpisode()

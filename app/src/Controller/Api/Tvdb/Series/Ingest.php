@@ -31,7 +31,7 @@ class Ingest extends AbstractController
 
         return new JsonResponse([
             'message' => sprintf(
-                'Processing started for series: %s from Season: %d, Episode:%d',
+                'Processing started for series: %s from Season: %d, EpisodeRepository:%d',
                 $this->criteria->tvdbSeriesId,
                 $this->criteria->season,
                 $this->criteria->episode

@@ -2,10 +2,10 @@
 
 namespace App\Tests\Controller\Api;
 
-use App\Controller\Api\NextUpController;
+use App\Controller\Api\EpisodeController;
 use App\Document\Episode as EpisodeDocument;
 use App\Helper\NextUpHelper;
-use App\Repository\Episode as EpisodeRepository;
+use App\Repository\EpisodeRepository as EpisodeRepository;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
@@ -15,7 +15,7 @@ class NextUpControllerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    private NextUpController $unit;
+    private EpisodeController $unit;
     private NextUpHelper $nextUpEpisodeHelper;
     private EpisodeRepository $episodeRepository;
     private EpisodeDocument $episodeDocument;
@@ -32,7 +32,7 @@ class NextUpControllerTest extends TestCase
         $container = Mockery::mock(ContainerInterface::class);
         $container->expects('has')->with('serializer')->andReturnFalse();
 
-        $this->unit = new NextUpController($this->nextUpEpisodeHelper, $this->episodeRepository);
+        $this->unit = new EpisodeController($this->nextUpEpisodeHelper, $this->episodeRepository);
         $this->unit->setContainer($container);
     }
 

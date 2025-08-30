@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Helper;
 
-use App\Repository\Series;
+use App\Repository\SeriesRepository;
 
 class NextUpHelper
 {
     public function __construct(
-        private Series $series
+        private SeriesRepository $series
     ) {
     }
 

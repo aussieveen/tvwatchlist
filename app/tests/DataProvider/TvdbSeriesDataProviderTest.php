@@ -59,7 +59,7 @@ class TvdbSeriesDataProviderTest extends TestCase
             'status' => 'success',
             'data' => array_merge([
                 'id' => '123',
-                'name' => 'Test Series',
+                'name' => 'Test SeriesRepository',
                 'image' => 'https://www.example.com/image.jpg',
                 'status' => [
                     'id' => 1,
@@ -69,7 +69,7 @@ class TvdbSeriesDataProviderTest extends TestCase
 
         $actual = $this->unit->getSeries('123', $fromSeason);
 
-        $this->assertSame('Test Series', $actual->title);
+        $this->assertSame('Test SeriesRepository', $actual->title);
         $this->assertSame('https://www.example.com/image.jpg', $actual->poster);
         $this->assertSame(1, $actual->status);
     }
@@ -115,7 +115,7 @@ class TvdbSeriesDataProviderTest extends TestCase
             'status' => 'success',
             'data' => [
                 'id' => '123',
-                'name' => 'Test Series',
+                'name' => 'Test SeriesRepository',
                 'image' => 'https://www.example.com/image.jpg',
                 'status' => [
                     'id' => 1,
@@ -145,7 +145,7 @@ class TvdbSeriesDataProviderTest extends TestCase
             'status' => 'success',
             'data' => [
                 'id' => '123',
-                'name' => 'Test Series',
+                'name' => 'Test SeriesRepository',
                 'image' => 'https://www.example.com/image.jpg',
                 'status' => [
                     'id' => 1,
@@ -176,7 +176,7 @@ class TvdbSeriesDataProviderTest extends TestCase
                 'episodes' => [
                     [
                         'id' => '101112',
-                        'name' => 'Test Episode',
+                        'name' => 'Test EpisodeRepository',
                         'overview' => 'Test Overview',
                         'seasonNumber' => 1,
                         'number' => 1,
@@ -198,7 +198,7 @@ class TvdbSeriesDataProviderTest extends TestCase
                     'episodes' => [
                         [
                             'id' => '131415',
-                            'name' => 'Test Episode 2',
+                            'name' => 'Test EpisodeRepository 2',
                             'overview' => 'Test Overview 2',
                             'seasonNumber' => 2,
                             'number' => 1,
@@ -217,7 +217,7 @@ class TvdbSeriesDataProviderTest extends TestCase
         $this->assertEquals([
             101 => new Episode(
                 '101112',
-                'Test Episode',
+                'Test EpisodeRepository',
                 'Test Overview',
                 '2019-01-01',
                 1,
@@ -225,7 +225,7 @@ class TvdbSeriesDataProviderTest extends TestCase
             ),
             201 => new Episode(
                 '131415',
-                'Test Episode 2',
+                'Test EpisodeRepository 2',
                 'Test Overview 2',
                 '2020-01-01',
                 2,

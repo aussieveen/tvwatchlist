@@ -9,7 +9,7 @@ use App\Document\Episode as EpisodeDocument;
 use App\Document\History;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
-class Series
+class SeriesRepository
 {
     public function __construct(
         private DocumentManager $documentManager

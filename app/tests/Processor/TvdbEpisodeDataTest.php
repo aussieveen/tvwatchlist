@@ -23,7 +23,7 @@ class TvdbEpisodeDataTest extends TestCase
     {
         $series = new Series(
             '123',
-            'Test Series',
+            'Test SeriesRepository',
             'https://www.thetvdb.com/banners/posters/5b3e0b2d9d0c5.jpg',
             1
         );
@@ -33,7 +33,7 @@ class TvdbEpisodeDataTest extends TestCase
             [
                 [
                     'id' => 2,
-                    'name' => 'Test Episode 2',
+                    'name' => 'Test EpisodeRepository 2',
                     'overview' => 'Test Overview 2',
                     'aired' => '2021-01-02',
                     'seasonNumber' => 2,
@@ -41,7 +41,7 @@ class TvdbEpisodeDataTest extends TestCase
                 ],
                 [
                     'id' => 2,
-                    'name' => 'Test Episode 2',
+                    'name' => 'Test EpisodeRepository 2',
                     'overview' => 'Test Overview 2',
                     'aired' => '2021-01-02',
                     'seasonNumber' => 2,
@@ -49,7 +49,7 @@ class TvdbEpisodeDataTest extends TestCase
                 ],
                 [
                     'id' => 2,
-                    'name' => 'Test Episode 2',
+                    'name' => 'Test EpisodeRepository 2',
                     'overview' => 'Test Overview 2',
                     'aired' => null,
                     'seasonNumber' => 2,
@@ -64,7 +64,7 @@ class TvdbEpisodeDataTest extends TestCase
         $this->assertEquals(
             new Episode(
                 '2',
-                'Test Episode 2',
+                'Test EpisodeRepository 2',
                 'Test Overview 2',
                 '2021-01-02',
                 2,

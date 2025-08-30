@@ -26,7 +26,7 @@ class IngestTest extends TestCase
 
         $this->assertEquals(
             [
-                'message' => 'Processing started for series: 123 from Season: 1, Episode:1',
+                'message' => 'Processing started for series: 123 from Season: 1, EpisodeRepository:1',
                 'status' => 202,
                 'title' => 'OK'
             ],

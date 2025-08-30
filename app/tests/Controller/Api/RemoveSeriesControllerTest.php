@@ -3,7 +3,7 @@
 namespace App\Tests\Controller\Api;
 
 use App\Controller\Api\RemoveSeriesController;
-use App\Repository\Episode as EpisodeRepository;
+use App\Repository\EpisodeRepository as EpisodeRepository;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;

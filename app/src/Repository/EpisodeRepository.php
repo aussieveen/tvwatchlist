@@ -4,19 +4,14 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
 use App\Document\Episode as EpisodeDocument;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 
-class Episode
+class EpisodeRepository extends DocumentRepository
 {
-    public function __construct(
-        private DocumentManager $documentManager,
-    ) {
-    }
-
-    public function getLatestUnwatchedFromSeries(string $series): ?EpisodeDocument
+   public function getLatestUnwatchedFromSeries(string $series): ?EpisodeDocument
     {
-        $builder = $this->documentManager->createQueryBuilder(EpisodeDocument::class)
+        $builder = $this->createQueryBuilder()
             ->field('seriesTitle')->equals($series)
             ->field('watched')->equals(false)
             ->sort('season', 'ASC')
@@ -28,7 +23,7 @@ class Episode
 
     public function getFirstEpisodeForSeries(string $seriesTitle): ?EpisodeDocument
     {
-        $builder = $this->documentManager->createQueryBuilder(EpisodeDocument::class)
+        $builder = $this->createQueryBuilder()
             ->field('seriesTitle')->equals($seriesTitle)
             ->sort('season', 'ASC')
             ->sort('episode', 'ASC')
@@ -39,7 +34,7 @@ class Episode
 
     public function deleteEpisodesWithTvdbSeriesId(string $tvdbSeriesId): void
     {
-        $builder = $this->documentManager->createQueryBuilder(EpisodeDocument::class)
+        $builder = $this->createQueryBuilder()
             ->remove()
             ->field('tvdbSeriesId')->equals($tvdbSeriesId);
 

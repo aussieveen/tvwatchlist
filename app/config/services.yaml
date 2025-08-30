@@ -37,15 +37,12 @@ services:
         arguments:
             $requestStack: '@request_stack'
 
-    App\Swagger\SwaggerDecorator:
-        decorates: 'api_platform.openapi.normalizer'
-        arguments:
-          [
-              '@App\Swagger\SwaggerDecorator.inner',
-              '%kernel.project_dir%/config/services/swagger.yaml',
-          ]
-        autoconfigure: false
-        calls:
-            - setContainer: [ '@service_container' ]
-
     Symfony\Component\Yaml\Parser: ~
+
+    App\Admin\EpisodeAdmin:
+        tags:
+            - { name: sonata.admin, model_class: App\Document\Episode, manager_type: doctrine_mongodb, label: "Episodes", group: "Watchlist" }
+
+    App\Admin\HistoryAdmin:
+        tags:
+            - { name: sonata.admin, model_class: App\Document\History, manager_type: doctrine_mongodb, label: History, group: "Watchlist" }

@@ -28,7 +28,7 @@ class Ingest
         );
 
         if ($series === null) {
-            throw new RuntimeException('Series not found');
+            throw new RuntimeException('SeriesRepository not found');
         }
 
         $episodeRepository = $this->documentManager->getRepository(EpisodeDocument::class);

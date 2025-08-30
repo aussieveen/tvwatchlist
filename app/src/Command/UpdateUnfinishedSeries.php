@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Document\Episode;
 use App\Entity\Ingest\Criteria;
 use App\Processor\Ingest;
-use App\Repository\Episode;
-use App\Repository\Series;
+use App\Repository\EpisodeRepository;
+use App\Repository\SeriesRepository;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,11 +21,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 class UpdateUnfinishedSeries extends Command
 {
+    private EpisodeRepository $episodeRepository;
+
     public function __construct(
-        private Episode $episodeRepository,
-        private Series $seriesRespository,
+        DocumentManager $documentManager,
+        private readonly SeriesRepository $seriesRespository,
         private Ingest $ingestProcess
     ) {
+        $this->episodeRepository = $documentManager->getRepository(Episode::class);
+
         parent::__construct();
     }
 
