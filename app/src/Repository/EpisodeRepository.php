@@ -9,7 +9,7 @@ use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 
 class EpisodeRepository extends DocumentRepository
 {
-   public function getLatestUnwatchedFromSeries(string $series): ?EpisodeDocument
+    public function getLatestUnwatchedFromSeries(string $series): ?EpisodeDocument
     {
         $builder = $this->createQueryBuilder()
             ->field('seriesTitle')->equals($series)
