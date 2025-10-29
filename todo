@@ -1,0 +1,6 @@
+- Controller get request and sends to processor
+  - Processer gets request and send to deserializer
+    - deserializer takes request and deserliazes, returns an object
+  - validate the object from attribute key->value i.e expects a string value, gets string value
+  - if valid, return object
+- Persist object to db
