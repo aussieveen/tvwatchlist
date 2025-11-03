@@ -6,6 +6,7 @@ namespace App\Processor;
 
 use App\DataProvider\TvdbSeriesDataProvider;
 use App\Document\Episode as EpisodeDocument;
+use App\Document\EpisodeStatus;
 use App\Entity\Ingest\Criteria;
 use DateTimeImmutable;
 use Doctrine\ODM\MongoDB\DocumentManager;
@@ -52,7 +53,7 @@ class Ingest
             $episodeDocument->poster = $series->poster;
             $episodeDocument->universe = $criteria->universe;
             $episodeDocument->platform = $criteria->platform;
-            $episodeDocument->status = EpisodeDocument::VALID_STATUSES[$series->status];
+            $episodeDocument->status = EpisodeStatus::fromTvdbStatus($series->status)->value;
             $episodeDocument->airDate = new DateTimeImmutable($episode->aired);
 
             $this->documentManager->persist($episodeDocument);

@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace App\Document;
 
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Patch;
 use DateTimeInterface;
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
@@ -20,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new ODM\Index(
             keys: ['seriesTitle' => 'asc', 'season' => 'asc', 'episode' => 'asc'],
             unique: true
-        )
+        ),
     ]
 )]
 #[ODM\HasLifecycleCallbacks]
@@ -28,53 +23,30 @@ use Symfony\Component\Validator\Constraints as Assert;
     fields: ['seriesTitle', 'season', 'episode'],
     message: 'Series, Season and Episode combination should be unique'
 )]
-#[ApiResource(
-    operations: [
-        new Get(),
-        new GetCollection(),
-        new Patch(),
-        new Delete()
-    ],
-    normalizationContext: [
-        'groups' => ['episode:read'],
-        'skip_null_values' => true,
-        'allow_extra_attributes' => false
-    ],
-    denormalizationContext: [
-        'groups' => ['episode:write']
-    ],
-    order: ['airDate' => 'ASC']
-)]
 class Episode
 {
-    public final const STATUS_AIRING = 1;
-    public final const STATUS_FINISHED = 2;
-    public final const STATUS_UPCOMING = 3;
-    public final const VALID_STATUSES = [
-        self::STATUS_AIRING => 'airing', self::STATUS_FINISHED => 'finished', self::STATUS_UPCOMING => 'upcoming'
-    ];
-    public final const AVAILABLE_PLATFORMS = ['Plex','Netflix','Disney Plus','Amazon Prime'];
-
-    #[Groups(['episode:read','identifier'])]
+    public const string READ_GROUP = 'episode:read';
+    public const string WRITE_GROUP = 'episode:write';
+    #[Groups([self::READ_GROUP, 'identifier'])]
     #[ODM\Id(type: 'integer', strategy: 'INCREMENT')]
     private int $id;
 
-    #[Groups(['episode:read'])]
+    #[Groups([self::READ_GROUP])]
     #[ODM\Field(type: 'string')]
     #[Assert\NotBlank]
     public string $title;
 
-    #[Groups(['episode:read'])]
+    #[Groups([self::READ_GROUP])]
     #[ODM\Field(type: 'string')]
     #[Assert\NotBlank]
     public string $description;
 
-    #[Groups(['episode:read'])]
+    #[Groups([self::READ_GROUP])]
     #[ODM\Field(type: 'integer')]
     #[Assert\NotBlank]
     public int $season;
 
-    #[Groups(['episode:read'])]
+    #[Groups([self::READ_GROUP])]
     #[ODM\Field(type: 'integer')]
     #[Assert\NotBlank]
     public int $episode;
@@ -83,7 +55,7 @@ class Episode
     #[Assert\NotBlank]
     public string $tvdbEpisodeId;
 
-    #[Groups(['episode:read'])]
+    #[Groups([self::READ_GROUP])]
     #[ODM\Field(type: 'string')]
     #[Assert\NotBlank]
     public string $seriesTitle;
@@ -92,31 +64,31 @@ class Episode
     #[Assert\NotBlank]
     public string $tvdbSeriesId;
 
-    #[Groups(['episode:read'])]
+    #[Groups([self::READ_GROUP])]
     #[ODM\Field(type: 'string')]
     #[Assert\NotBlank]
     #[Assert\Url]
     public string $poster;
 
-    #[Groups(['episode:read'])]
+    #[Groups([self::READ_GROUP])]
     #[ODM\Field(type: 'string')]
     public string $universe;
 
-    #[Groups(['episode:read'])]
+    #[Groups([self::READ_GROUP])]
     #[ODM\Field(type: 'string')]
-    #[Assert\Choice(choices: self::AVAILABLE_PLATFORMS)]
+    #[Assert\Choice(callback: [EpisodePlatforms::class, 'values'])]
     public string $platform;
 
-    #[Groups(['episode:read'])]
+    #[Groups([self::READ_GROUP])]
     #[ODM\Field(type: 'string')]
-    #[Assert\Choice(choices: self::VALID_STATUSES)]
+    #[Assert\Choice(callback: [EpisodeStatus::class, 'values'])]
     public string $status;
 
-    #[Groups(['episode:read'])]
+    #[Groups([self::READ_GROUP])]
     #[ODM\Field(type: 'date')]
     public ?DateTimeInterface $airDate;
 
-    #[Groups(['episode:read','episode:write'])]
+    #[Groups([self::READ_GROUP, self::WRITE_GROUP])]
     #[ODM\Field(type: 'boolean')]
     public bool $watched = false;
 

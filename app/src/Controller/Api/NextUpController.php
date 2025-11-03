@@ -22,7 +22,6 @@ class NextUpController extends AbstractController
     public function search(): JsonResponse
     {
         $seriesTitle = $this->nextUpEpisodeHelper->getSeriesNotOnRecentlyWatchedList();
-
         if (!$seriesTitle) {
             $seriesTitle = $this->nextUpEpisodeHelper->getSeriesFromRecentlyWatchedList();
         }
