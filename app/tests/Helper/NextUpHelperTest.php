@@ -7,6 +7,7 @@ use App\Repository\Episode;
 use App\Repository\Series;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class NextUpHelperTest extends TestCase
@@ -61,9 +62,7 @@ class NextUpHelperTest extends TestCase
         $this->assertSame('', $this->unit->getSeriesNotOnRecentlyWatchedList());
     }
 
-    /**
-     * @dataProvider getRecentlyWatchedDataProvider
-     */
+    #[DataProvider('getRecentlyWatchedDataProvider')]
     public function testGetShowFromRecentlyWatchedList($watched, $expected): void
     {
         $this->series->expects('getTitlesWithWatchableEpisodes')
@@ -77,62 +76,20 @@ class NextUpHelperTest extends TestCase
     public static function getRecentlyWatchedDataProvider(): array
     {
         return [
-            'empty' => [
-                'recentlyWatched' => [],
-                'expected' => '',
-            ],
-            'one item in list' => [
-                'recentlyWatched' => ['show1'],
-                'expected' => 'show1',
-            ],
-            'only two items in list' => [
-                'recentlyWatched' => ['show1', 'show2'],
-                'expected' => 'show2',
-            ],
-            'two same items in list' => [
-                'recentlyWatched' => ['show1', 'show1'],
-                'expected' => 'show1',
-            ],
-            'two items but one is not in watchable list' => [
-                'recentlyWatched' => ['show1', 'show6'],
-                'expected' => 'show1',
-            ],
-            'three unique items' => [
-                'recentlyWatched' => ['show1', 'show2', 'show3'],
-                'expected' => 'show3',
-            ],
-            'four items, two shows, equal spread' => [
-                'recentlyWatched' => ['show4', 'show2', 'show2', 'show4'],
-                'expected' => 'show2',
-            ],
-            'four items, two shows, three of one, one of one' => [
-                'recentlyWatched' => ['show4', 'show2', 'show4', 'show4'],
-                'expected' => 'show2',
-            ],
-            'four items, three shows' => [
-                'recentlyWatched' => ['show4', 'show2', 'show3', 'show4'],
-                'expected' => 'show3',
-            ],
-            'five items, four shows' => [
-                'recentlyWatched' => ['show5', 'show2', 'show3', 'show4', 'show5'],
-                'expected' => 'show4',
-            ],
-            'five items, two shows' => [
-                'recentlyWatched' => ['show1', 'show2', 'show2', 'show2', 'show1'],
-                'expected' => 'show2',
-            ],
-            'five items, three shows, evenly spread' => [
-                'recentlyWatched' => ['show1', 'show2', 'show3', 'show1', 'show2'],
-                'expected' => 'show3',
-            ],
-            'five items, three shows, awkwardly spread' => [
-                'recentlyWatched' => ['show1', 'show3', 'show2', 'show2', 'show2'],
-                'expected' => 'show2',
-            ],
-            'five items, three shows, 1-3-2-3-2' => [
-                'recentlyWatched' => ['show1', 'show3', 'show2', 'show3', 'show2'],
-                'expected' => 'show2',
-            ]
+            'empty' => [[], ''],
+            'one item in list' => [['show1'], 'show1'],
+            'only two items in list' => [['show1', 'show2'], 'show2'],
+            'two same items in list' => [['show1', 'show1'], 'show1'],
+            'two items but one is not in watchable list' => [['show1', 'show6'], 'show1'],
+            'three unique items' => [['show1', 'show2', 'show3'], 'show3'],
+            'four items, two shows, equal spread' => [['show4', 'show2', 'show2', 'show4'], 'show2'],
+            'four items, two shows, three of one, one of one' => [['show4', 'show2', 'show4', 'show4'], 'show2'],
+            'four items, three shows' => [['show4', 'show2', 'show3', 'show4'], 'show3'],
+            'five items, four shows' => [['show5', 'show2', 'show3', 'show4', 'show5'], 'show4'],
+            'five items, two shows' => [['show1', 'show2', 'show2', 'show2', 'show1'], 'show2'],
+            'five items, three shows, evenly spread' => [['show1', 'show2', 'show3', 'show1', 'show2'], 'show3'],
+            'five items, three shows, awkwardly spread' => [['show1', 'show3', 'show2', 'show2', 'show2'], 'show2'],
+            'five items, three shows, 1-3-2-3-2' => [['show1', 'show3', 'show2', 'show3', 'show2'], 'show2'],
         ];
     }
 }

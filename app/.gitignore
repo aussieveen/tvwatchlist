@@ -27,4 +27,4 @@ yarn-error.log
 
 ### phplint ###
 /.phplint.cache
-./.php-cs-fixer.cache
+.php-cs-fixer.cache

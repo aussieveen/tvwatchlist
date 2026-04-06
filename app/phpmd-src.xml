@@ -31,7 +31,16 @@
 
     <rule ref="rulesets/controversial.xml"/>
 
-    <rule ref="rulesets/design.xml" />
+    <rule ref="rulesets/design.xml">
+        <exclude name="CouplingBetweenObjects" />
+    </rule>
+
+    <rule ref="rulesets/design.xml/CouplingBetweenObjects">
+        <properties>
+            <!-- Controllers using OA attributes legitimately need more dependencies -->
+            <property name="maximum" value="20" />
+        </properties>
+    </rule>
 
     <rule ref="rulesets/naming.xml">
         <!--Fails for $id-->
