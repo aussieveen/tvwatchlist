@@ -1,18 +1,4 @@
 {
-    "api-platform/core": {
-        "version": "3.2",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "3.2",
-            "ref": "696d44adc3c0d4f5d25a2f1c4f3700dd8a5c6db9"
-        },
-        "files": [
-            "config/packages/api_platform.yaml",
-            "config/routes/api_platform.yaml",
-            "src/ApiResource/.gitignore"
-        ]
-    },
     "doctrine/annotations": {
         "version": "2.0",
         "recipe": {
@@ -20,6 +6,15 @@
             "branch": "main",
             "version": "1.10",
             "ref": "64d8583af5ea57b7afa4aba4b159907f3a148b05"
+        }
+    },
+    "doctrine/deprecations": {
+        "version": "1.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "fdd756167454623e21f1d769c5b814b243782a67"
         }
     },
     "doctrine/doctrine-bundle": {
@@ -62,17 +57,14 @@
             "src/Document/.gitignore"
         ]
     },
-    "friendsofphp/php-cs-fixer": {
-        "version": "3.21",
+    "nelmio/api-doc-bundle": {
+        "version": "4.26",
         "recipe": {
-            "repo": "github.com/symfony/recipes",
+            "repo": "github.com/symfony/recipes-contrib",
             "branch": "main",
             "version": "3.0",
-            "ref": "be2103eb4a20942e28a6dd87736669b757132435"
-        },
-        "files": [
-            ".php-cs-fixer.dist.php"
-        ]
+            "ref": "c8e0c38e1a280ab9e37587a8fa32b251d5bc1c94"
+        }
     },
     "nelmio/cors-bundle": {
         "version": "2.3",
@@ -84,18 +76,6 @@
         },
         "files": [
             "config/packages/nelmio_cors.yaml"
-        ]
-    },
-    "nyholm/psr7": {
-        "version": "1.8",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "1.0",
-            "ref": "4a8c0345442dcca1d8a2c65633dcf0285dd5a5a2"
-        },
-        "files": [
-            "config/packages/nyholm_psr7.yaml"
         ]
     },
     "phpunit/phpunit": {
@@ -187,18 +167,6 @@
             "version": "1.0",
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
-    },
-    "symfony/mercure-bundle": {
-        "version": "0.3",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "0.3",
-            "ref": "851667ac03fd113c5bd2215fb743974f6709bc62"
-        },
-        "files": [
-            "config/packages/mercure.yaml"
-        ]
     },
     "symfony/messenger": {
         "version": "6.2",
