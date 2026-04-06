@@ -37,3 +37,13 @@ services:
         arguments:
             $requestStack: '@request_stack'
 
+    App\Admin\EpisodeAdmin:
+        arguments: [~, App\Document\Episode, ~]
+        tags:
+            - { name: sonata.admin, model_class: App\Document\Episode, manager_type: doctrine_mongodb, label: Episodes }
+
+    App\Admin\HistoryAdmin:
+        arguments: [~, App\Document\History, ~]
+        tags:
+            - { name: sonata.admin, model_class: App\Document\History, manager_type: doctrine_mongodb, label: History }
+

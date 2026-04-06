@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class History
 {
-    #[ODM\Id(type: 'integer', strategy: 'INCREMENT')]
+    #[ODM\Id(type: 'int', strategy: 'INCREMENT')]
     private int $id;
 
     public function getId(): int

@@ -34,7 +34,7 @@ class Episode
     public final const AVAILABLE_PLATFORMS = ['Plex','Netflix','Disney Plus','Amazon Prime'];
 
     #[Groups(['episode:read','identifier'])]
-    #[ODM\Id(type: 'integer', strategy: 'INCREMENT')]
+    #[ODM\Id(type: 'int', strategy: 'INCREMENT')]
     private int $id;
 
     #[Groups(['episode:read'])]
@@ -48,12 +48,12 @@ class Episode
     public string $description;
 
     #[Groups(['episode:read'])]
-    #[ODM\Field(type: 'integer')]
+    #[ODM\Field(type: 'int')]
     #[Assert\NotBlank]
     public int $season;
 
     #[Groups(['episode:read'])]
-    #[ODM\Field(type: 'integer')]
+    #[ODM\Field(type: 'int')]
     #[Assert\NotBlank]
     public int $episode;
 
@@ -95,7 +95,7 @@ class Episode
     public ?DateTimeInterface $airDate;
 
     #[Groups(['episode:read','episode:write'])]
-    #[ODM\Field(type: 'boolean')]
+    #[ODM\Field(type: 'bool')]
     public bool $watched = false;
 
     public function getId(): int
