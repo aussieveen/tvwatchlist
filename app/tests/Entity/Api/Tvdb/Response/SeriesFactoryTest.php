@@ -6,6 +6,7 @@ use App\Entity\Api\Tvdb\Response\Series;
 use App\Entity\Api\Tvdb\Response\SeriesFactory;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class SeriesFactoryTest extends TestCase
@@ -29,9 +30,7 @@ class SeriesFactoryTest extends TestCase
         $this->assertNull($this->unit->create(['id' => 1, 'type' => 'show']));
     }
 
-    /**
-     * @dataProvider createDataProvider
-     */
+    #[DataProvider('createDataProvider')]
     public function testCreate(array $show, Series $expected): void
     {
         $this->assertSame(json_encode($expected), json_encode($this->unit->create($show)));

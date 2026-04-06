@@ -8,6 +8,7 @@ use App\Entity\Tvdb\Episode;
 use App\Processor\TvdbEpisodeData;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -50,9 +51,7 @@ class TvdbSeriesDataProviderTest extends TestCase
         $this->assertNull($this->unit->getSeries('123'));
     }
 
-    /**
-     * @dataProvider invalidSeriesDataProvider
-     */
+    #[DataProvider('invalidSeriesDataProvider')]
     public function testGetSeriesReturnBaseInfo(array $invalidData, int $fromSeason = 1): void
     {
         $this->seriesResponse->expects('getContent')->andReturn(json_encode([

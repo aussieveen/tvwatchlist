@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace App\Document;
 
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Patch;
 use DateTimeInterface;
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
@@ -28,23 +23,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     fields: ['seriesTitle', 'season', 'episode'],
     message: 'Series, Season and Episode combination should be unique'
 )]
-#[ApiResource(
-    operations: [
-        new Get(),
-        new GetCollection(),
-        new Patch(),
-        new Delete()
-    ],
-    normalizationContext: [
-        'groups' => ['episode:read'],
-        'skip_null_values' => true,
-        'allow_extra_attributes' => false
-    ],
-    denormalizationContext: [
-        'groups' => ['episode:write']
-    ],
-    order: ['airDate' => 'ASC']
-)]
 class Episode
 {
     public final const STATUS_AIRING = 1;
@@ -56,7 +34,7 @@ class Episode
     public final const AVAILABLE_PLATFORMS = ['Plex','Netflix','Disney Plus','Amazon Prime'];
 
     #[Groups(['episode:read','identifier'])]
-    #[ODM\Id(type: 'integer', strategy: 'INCREMENT')]
+    #[ODM\Id(type: 'int', strategy: 'INCREMENT')]
     private int $id;
 
     #[Groups(['episode:read'])]
@@ -70,12 +48,12 @@ class Episode
     public string $description;
 
     #[Groups(['episode:read'])]
-    #[ODM\Field(type: 'integer')]
+    #[ODM\Field(type: 'int')]
     #[Assert\NotBlank]
     public int $season;
 
     #[Groups(['episode:read'])]
-    #[ODM\Field(type: 'integer')]
+    #[ODM\Field(type: 'int')]
     #[Assert\NotBlank]
     public int $episode;
 
@@ -117,7 +95,7 @@ class Episode
     public ?DateTimeInterface $airDate;
 
     #[Groups(['episode:read','episode:write'])]
-    #[ODM\Field(type: 'boolean')]
+    #[ODM\Field(type: 'bool')]
     public bool $watched = false;
 
     public function getId(): int

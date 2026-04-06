@@ -21,7 +21,7 @@ class SeriesTitleFactoryTest extends TestCase
 
     public function setUp(): void
     {
-        $this->request = Mockery::mock(Request::class);
+        $this->request = new Request();
         $this->requestStack = Mockery::mock(RequestStack::class);
         $this->requestStack->allows('getCurrentRequest')->andReturn($this->request)->byDefault();
 
@@ -40,8 +40,6 @@ class SeriesTitleFactoryTest extends TestCase
 
     public function testBuildFromRequestStackThrowsExceptionWhenSeriesTitleIsNotProvided(): void
     {
-        $this->request->expects('get')->with('seriesTitle')->andReturnNull();
-
         $this->expectException(BadRequestException::class);
         $this->expectExceptionMessage('No series title provided');
 
@@ -50,7 +48,7 @@ class SeriesTitleFactoryTest extends TestCase
 
     public function testBuildFromRequestStackReturnsSeriesTitleWhenSeriesTitleIsProvided(): void
     {
-        $this->request->expects('get')->with('seriesTitle')->andReturn('series title');
+        $this->request->query->set('seriesTitle', 'series title');
 
         $seriesTitle = $this->unit->buildFromRequestStack($this->requestStack);
 

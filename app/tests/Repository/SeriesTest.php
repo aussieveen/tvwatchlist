@@ -13,6 +13,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Iterator\Iterator;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class SeriesTest extends TestCase
@@ -38,9 +39,7 @@ class SeriesTest extends TestCase
         $this->unit = new Series($this->documentManager);
     }
 
-    /**
-     * @dataProvider getTitlesRecentlyWatchedProvider
-     */
+    #[DataProvider('getTitlesRecentlyWatchedProvider')]
     public function testGetTitlesRecentlyWatched(array $expected, array $aggregationResult)
     {
         $this->setUpGetTitlesRecentlyWatchedExpectations($aggregationResult);
@@ -88,9 +87,7 @@ class SeriesTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider titlesProvider
-     */
+    #[DataProvider('titlesProvider')]
     public function testGetTitlesWithWatchableEpisodes(array $expected, array $aggregationResult)
     {
         $matchStage = Mockery::mock(Stage\MatchStage::class);
@@ -136,9 +133,7 @@ class SeriesTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider titlesProvider
-     */
+    #[DataProvider('titlesProvider')]
     public function testGetTitlesNotRecentlyWatchedAndNotInAnUniverse(array $expected, array $aggregationResult): void
     {
         // $builder->match()->field('watched')->equals(false)
@@ -184,9 +179,7 @@ class SeriesTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider universesProvider
-     */
+    #[DataProvider('universesProvider')]
     public function testGetUniverses(array $expected, array $aggregationResult): void
     {
         // $builder->match()->field('watched')->equals(false)
@@ -241,9 +234,7 @@ class SeriesTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider latestTitleFromUniverseProvider
-     */
+    #[DataProvider('latestTitleFromUniverseProvider')]
     public function testGetLatestTitleFromUniverse(string $expected, array $aggregationResult): void
     {
         // $builder->match()->field('watched')->equals(false)
@@ -296,9 +287,7 @@ class SeriesTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider titlesProvider
-     */
+    #[DataProvider('titlesProvider')]
     public function testGetUnfinishedSeriesTitles(array $expected, array $aggregationResult)
     {
         // $builder->match()->field('status')->notEqual(EpisodeDocument::VALID_STATUSES[EpisodeDocument::STATUS_FINISHED])

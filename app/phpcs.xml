@@ -14,8 +14,9 @@
     <file>src/</file>
     <file>tests/</file>
 
-    <!-- Ignore the bootstrap file for tests -->
+    <!-- Ignore generated/reference files -->
     <exclude-pattern>config/bootstrap.php</exclude-pattern>
+    <exclude-pattern>config/reference.php</exclude-pattern>
 
     <!-- Ignore the migrations files, they are auto-generated -->
     <exclude-pattern>src/Migrations/*</exclude-pattern>

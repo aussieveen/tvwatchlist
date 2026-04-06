@@ -77,6 +77,7 @@ class UpdateUnfinishedSeriesTest extends TestCase
         $input->expects('validate');
 
         $output = Mockery::mock(OutputInterface::class);
+        $output->shouldReceive('writeln');
 
         $this->unit->run($input, $output);
     }
