@@ -7,12 +7,14 @@ namespace App\Repository;
 use App\Document\Episode;
 use App\Document\Episode as EpisodeDocument;
 use App\Document\History;
+use DateTimeInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use MongoDB\BSON\UTCDateTime;
 
 class Series
 {
     public function __construct(
-        private DocumentManager $documentManager
+        private readonly DocumentManager $documentManager
     ) {
     }
 
@@ -95,5 +97,54 @@ class Series
             $seriesList[] = $series['_id'];
         }
         return $seriesList;
+    }
+
+    public function getSeriesTitlesWithAvailableCurrentSeason(DateTimeInterface $now): array
+    {
+        // Get the min unwatched season per series
+        $builder = $this->documentManager->createAggregationBuilder(EpisodeDocument::class);
+        $builder->match()->field('watched')->equals(false)
+            ->group()
+            ->field('id')->expression('$seriesTitle')
+            ->field('minSeason')->min('$season');
+
+        $seriesMinSeasons = [];
+        foreach ($builder->getAggregation()->getIterator()->toArray() as $result) {
+            $seriesMinSeasons[$result['_id']] = $result['minSeason'];
+        }
+
+        if (empty($seriesMinSeasons)) {
+            return [];
+        }
+
+        // Get the max airDate per (seriesTitle, season) across all episodes
+        $airDateBuilder = $this->documentManager->createAggregationBuilder(EpisodeDocument::class);
+        $airDateBuilder->group()
+            ->field('id')->expression(['seriesTitle' => '$seriesTitle', 'season' => '$season'])
+            ->field('maxAirDate')->max('$airDate');
+
+        $seasonMaxAirDates = [];
+        foreach ($airDateBuilder->getAggregation()->getIterator()->toArray() as $result) {
+            $airDate = $result['maxAirDate'] ?? null;
+            if ($airDate instanceof UTCDateTime) {
+                $airDate = $airDate->toDateTime();
+            }
+            $seasonMaxAirDates[$result['_id']['seriesTitle'] . '::' . $result['_id']['season']] = $airDate;
+        }
+
+        // Return series where the max airDate of the next watchable season has passed
+        $available = [];
+        foreach ($seriesMinSeasons as $seriesTitle => $minSeason) {
+            $key = $seriesTitle . '::' . $minSeason;
+            if (
+                isset($seasonMaxAirDates[$key])
+                && $seasonMaxAirDates[$key] !== null
+                && $seasonMaxAirDates[$key] <= $now
+            ) {
+                $available[] = $seriesTitle;
+            }
+        }
+
+        return $available;
     }
 }

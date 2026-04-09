@@ -13,8 +13,8 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 class TvdbQueryClient extends TvdbClientBase
 {
     public function __construct(
-        private HttpClientInterface $httpClient,
-        private TvdbTokenProvider $tokenProvider
+        private readonly HttpClientInterface $httpClient,
+        private readonly TvdbTokenProvider $tokenProvider
     ) {
     }
 

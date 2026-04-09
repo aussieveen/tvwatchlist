@@ -317,4 +317,97 @@ class SeriesTest extends TestCase
             $this->unit->getUnfinishedSeriesTitles()
         );
     }
+
+    public function testGetSeriesTitlesWithAvailableCurrentSeason(): void
+    {
+        $firstBuilder = Mockery::mock(Builder::class);
+        $secondBuilder = Mockery::mock(Builder::class);
+
+        $this->documentManager->expects('createAggregationBuilder')
+            ->with(EpisodeDocument::class)
+            ->twice()
+            ->andReturnValues([$firstBuilder, $secondBuilder]);
+
+        // First aggregation: min unwatched season per series
+        // $builder->match()->field('watched')->equals(false)->group()->field('id')->expression('$seriesTitle')->field('minSeason')->min('$season')
+        $matchStage = Mockery::mock(Stage\MatchStage::class);
+        $firstBuilder->expects('match')->andReturn($matchStage);
+        $matchStage->expects('field')->with('watched')->andReturnSelf();
+        $matchStage->expects('equals')->with(false)->andReturnSelf();
+
+        $group1 = Mockery::mock(Stage\Group::class);
+        $matchStage->expects('group')->andReturn($group1);
+        $group1->shouldReceive('field')->andReturnSelf();
+        $group1->expects('expression')->with('$seriesTitle')->andReturnSelf();
+        $group1->expects('min')->with('$season')->andReturnSelf();
+
+        $aggregationMock1 = Mockery::mock(Aggregation::class);
+        $firstBuilder->expects('getAggregation')->andReturn($aggregationMock1);
+        $iteratorMock1 = Mockery::mock(Iterator::class);
+        $aggregationMock1->expects('getIterator')->andReturn($iteratorMock1);
+        $iteratorMock1->expects('toArray')->andReturn([
+            ['_id' => 'series1', 'minSeason' => 1],
+            ['_id' => 'series2', 'minSeason' => 2],
+        ]);
+
+        // Second aggregation: max airDate per (seriesTitle, season)
+        // $builder->group()->field('id')->expression([...])->field('maxAirDate')->max('$airDate')
+        $group2 = Mockery::mock(Stage\Group::class);
+        $secondBuilder->expects('group')->andReturn($group2);
+        $group2->shouldReceive('field')->andReturnSelf();
+        $group2->expects('expression')
+            ->with(['seriesTitle' => '$seriesTitle', 'season' => '$season'])
+            ->andReturnSelf();
+        $group2->expects('max')->with('$airDate')->andReturnSelf();
+
+        $aggregationMock2 = Mockery::mock(Aggregation::class);
+        $secondBuilder->expects('getAggregation')->andReturn($aggregationMock2);
+        $iteratorMock2 = Mockery::mock(Iterator::class);
+        $aggregationMock2->expects('getIterator')->andReturn($iteratorMock2);
+
+        $past = new \DateTime('-1 day');
+        $future = new \DateTime('+1 day');
+        $iteratorMock2->expects('toArray')->andReturn([
+            ['_id' => ['seriesTitle' => 'series1', 'season' => 1], 'maxAirDate' => $past],
+            ['_id' => ['seriesTitle' => 'series2', 'season' => 2], 'maxAirDate' => $future],
+            ['_id' => ['seriesTitle' => 'series3', 'season' => 1], 'maxAirDate' => $past],
+        ]);
+
+        $now = new \DateTimeImmutable();
+        $result = $this->unit->getSeriesTitlesWithAvailableCurrentSeason($now);
+
+        // series1 season 1 aired in past → available
+        // series2 season 2 not yet aired → not available
+        // series3 is not in the unwatched list → not returned
+        $this->assertSame(['series1'], $result);
+    }
+
+    public function testGetSeriesTitlesWithAvailableCurrentSeasonReturnsEmptyWhenNoUnwatchedSeries(): void
+    {
+        $firstBuilder = Mockery::mock(Builder::class);
+
+        $this->documentManager->expects('createAggregationBuilder')
+            ->with(EpisodeDocument::class)
+            ->once()
+            ->andReturn($firstBuilder);
+
+        $matchStage = Mockery::mock(Stage\MatchStage::class);
+        $firstBuilder->expects('match')->andReturn($matchStage);
+        $matchStage->expects('field')->with('watched')->andReturnSelf();
+        $matchStage->expects('equals')->with(false)->andReturnSelf();
+
+        $group1 = Mockery::mock(Stage\Group::class);
+        $matchStage->expects('group')->andReturn($group1);
+        $group1->shouldReceive('field')->andReturnSelf();
+        $group1->expects('expression')->with('$seriesTitle')->andReturnSelf();
+        $group1->expects('min')->with('$season')->andReturnSelf();
+
+        $aggregationMock = Mockery::mock(Aggregation::class);
+        $firstBuilder->expects('getAggregation')->andReturn($aggregationMock);
+        $iteratorMock = Mockery::mock(Iterator::class);
+        $aggregationMock->expects('getIterator')->andReturn($iteratorMock);
+        $iteratorMock->expects('toArray')->andReturn([]);
+
+        $this->assertSame([], $this->unit->getSeriesTitlesWithAvailableCurrentSeason(new \DateTimeImmutable()));
+    }
 }

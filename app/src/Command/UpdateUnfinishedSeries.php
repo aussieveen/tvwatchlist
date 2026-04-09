@@ -20,9 +20,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 class UpdateUnfinishedSeries extends Command
 {
     public function __construct(
-        private Episode $episodeRepository,
-        private Series $seriesRespository,
-        private Ingest $ingestProcess
+        private readonly Episode $episodeRepository,
+        private readonly Series $seriesRespository,
+        private readonly Ingest $ingestProcess
     ) {
         parent::__construct();
     }

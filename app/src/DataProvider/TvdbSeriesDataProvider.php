@@ -12,11 +12,11 @@ use App\Processor\TvdbEpisodeData;
 
 class TvdbSeriesDataProvider
 {
-    private const REGULAR_SEASON_TYPE = 1;
+    private const int REGULAR_SEASON_TYPE = 1;
 
     public function __construct(
-        private TvdbQueryClient $client,
-        private TvdbEpisodeData $episodeDataProcessor
+        private readonly TvdbQueryClient $client,
+        private readonly TvdbEpisodeData $episodeDataProcessor
     ) {
     }
 

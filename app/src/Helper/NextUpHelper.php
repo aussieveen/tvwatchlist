@@ -5,30 +5,34 @@ declare(strict_types=1);
 namespace App\Helper;
 
 use App\Repository\Series;
+use DateTimeImmutable;
 
 class NextUpHelper
 {
     public function __construct(
-        private Series $series
+        private readonly Series $series
     ) {
     }
 
     public function getSeriesNotOnRecentlyWatchedList(): string
     {
+        $availableSeries = $this->series->getSeriesTitlesWithAvailableCurrentSeason(new DateTimeImmutable());
         $seriesList = [];
         $recentlyWatched = $this->series->getTitlesRecentlyWatched();
 
         // Get the next unwatched show, not recently watched from each universe and add to the list.
         foreach ($this->series->getUniverses() as $universe) {
             $seriesTitle = $this->series->getLatestTitleFromUniverse($universe);
-            if (!in_array($seriesTitle, $recentlyWatched)) {
+            if (!in_array($seriesTitle, $recentlyWatched) && in_array($seriesTitle, $availableSeries)) {
                 $seriesList[] = $seriesTitle;
             }
         }
 
-        // Get all shows that are not recently watched and not in a universe.
+        // Get all shows that are not recently watched, not in a universe, and have a fully aired season.
         foreach ($this->series->getTitlesNotRecentlyWatchedAndNotInAnUniverse() as $seriesTitle) {
-            $seriesList[] = $seriesTitle;
+            if (in_array($seriesTitle, $availableSeries)) {
+                $seriesList[] = $seriesTitle;
+            }
         }
 
         return empty($seriesList) ? '' : $seriesList[array_rand($seriesList)];
@@ -37,6 +41,8 @@ class NextUpHelper
     public function getSeriesFromRecentlyWatchedList(): string
     {
         $watchableSeries = $this->series->getTitlesWithWatchableEpisodes();
+        $availableSeries = $this->series->getSeriesTitlesWithAvailableCurrentSeason(new DateTimeImmutable());
+        $watchableSeries = array_values(array_intersect($watchableSeries, $availableSeries));
 
         $recentlyWatchedSeries = $this->series->getTitlesRecentlyWatched();
 
