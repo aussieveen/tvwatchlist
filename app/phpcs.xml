@@ -23,4 +23,12 @@
 
     <!-- PSR-12 Extended Coding Style -->
     <rule ref="PSR12" />
+
+    <!-- Treat long lines as errors, not warnings -->
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="120"/>
+            <property name="absoluteLineLimit" value="120"/>
+        </properties>
+    </rule>
 </ruleset>

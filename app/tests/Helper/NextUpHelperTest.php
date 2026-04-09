@@ -76,8 +76,8 @@ class NextUpHelperTest extends TestCase
 
         for ($i = 0; $i < 20; $i++) {
             $actual = $this->unit->getSeriesNotOnRecentlyWatchedList();
-            $this->assertNotSame('daredevil', $actual, 'daredevil should be excluded as current season has not fully aired');
-            $this->assertNotSame('succession', $actual, 'succession should be excluded as current season has not fully aired');
+            $this->assertNotSame('daredevil', $actual, 'daredevil excluded: season not fully aired');
+            $this->assertNotSame('succession', $actual, 'succession excluded: season not fully aired');
             $this->assertSame('legends of tomorrow', $actual);
         }
     }
