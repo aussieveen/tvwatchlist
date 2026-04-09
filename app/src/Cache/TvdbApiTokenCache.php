@@ -18,8 +18,8 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 class TvdbApiTokenCache
 {
     public function __construct(
-        private CacheInterface $cache,
-        private TvdbAuthClient $tvdbClient
+        private readonly CacheInterface $cache,
+        private readonly TvdbAuthClient $tvdbClient
     ) {
     }
 

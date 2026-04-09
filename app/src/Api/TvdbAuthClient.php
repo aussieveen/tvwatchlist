@@ -12,9 +12,9 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 class TvdbAuthClient extends TvdbClientBase
 {
     public function __construct(
-        private HttpClientInterface $httpClient,
-        private string $apikey,
-        private string $pin
+        private readonly HttpClientInterface $httpClient,
+        private readonly string $apikey,
+        private readonly string $pin
     ) {
     }
 

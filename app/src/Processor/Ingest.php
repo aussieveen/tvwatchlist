@@ -14,8 +14,8 @@ use RuntimeException;
 class Ingest
 {
     public function __construct(
-        private DocumentManager $documentManager,
-        private TvdbSeriesDataProvider $tvdbSeriesDataProvider
+        private readonly DocumentManager $documentManager,
+        private readonly TvdbSeriesDataProvider $tvdbSeriesDataProvider
     ) {
     }
 

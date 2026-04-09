@@ -6,22 +6,14 @@ namespace App\Entity\Tvdb;
 
 class Series
 {
-    public readonly string $tvdbId;
-    public readonly string $title;
-    public readonly string $poster;
-    public readonly int $status;
     private array $episodes = [];
 
     public function __construct(
-        string $tvdbId,
-        string $title,
-        string $poster,
-        int $status
+        public readonly string $tvdbId,
+        public readonly string $title,
+        public readonly string $poster,
+        public readonly int $status
     ) {
-        $this->tvdbId = $tvdbId;
-        $this->title = $title;
-        $this->poster = $poster;
-        $this->status = $status;
         $this->episodes = [];
     }
 

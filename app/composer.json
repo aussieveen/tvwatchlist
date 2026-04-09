@@ -54,6 +54,7 @@
     "overtrue/phplint": "^9",
     "phpmd/phpmd": "3.x-dev",
     "phpunit/phpunit": "^13.0",
+    "rector/rector": "^2.4",
     "squizlabs/php_codesniffer": "^4.0",
     "symfony/browser-kit": "^8.0",
     "symfony/css-selector": "^8.0",

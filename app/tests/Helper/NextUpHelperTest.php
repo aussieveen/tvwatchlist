@@ -3,8 +3,8 @@
 namespace App\Tests\Helper;
 
 use App\Helper\NextUpHelper;
-use App\Repository\Episode;
 use App\Repository\Series;
+use DateTimeInterface;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -27,6 +27,10 @@ class NextUpHelperTest extends TestCase
 
     public function testGetSeriesNotOnRecentlyWatchedList(): void
     {
+        $this->series->shouldReceive('getSeriesTitlesWithAvailableCurrentSeason')
+            ->with(Mockery::type(DateTimeInterface::class))
+            ->andReturn(['legends of tomorrow', 'daredevil', 'succession']);
+
         $this->series->shouldReceive('getLatestTitleFromUniverse')
             ->with('dc')
             ->andReturn('legends of tomorrow');
@@ -50,8 +54,39 @@ class NextUpHelperTest extends TestCase
         }
     }
 
+    public function testGetSeriesNotOnRecentlyWatchedListExcludesUnairedSeason(): void
+    {
+        $this->series->shouldReceive('getSeriesTitlesWithAvailableCurrentSeason')
+            ->with(Mockery::type(DateTimeInterface::class))
+            ->andReturn(['legends of tomorrow']);
+
+        $this->series->shouldReceive('getLatestTitleFromUniverse')
+            ->with('dc')
+            ->andReturn('legends of tomorrow');
+        $this->series->shouldReceive('getLatestTitleFromUniverse')
+            ->with('marvel')
+            ->andReturn('daredevil');
+
+        $this->series->shouldReceive('getTitlesRecentlyWatched')
+            ->andReturn([]);
+        $this->series->shouldReceive('getUniverses')
+            ->andReturn(['dc', 'marvel']);
+        $this->series->shouldReceive('getTitlesNotRecentlyWatchedAndNotInAnUniverse')
+            ->andReturn(['succession']);
+
+        for ($i = 0; $i < 20; $i++) {
+            $actual = $this->unit->getSeriesNotOnRecentlyWatchedList();
+            $this->assertNotSame('daredevil', $actual, 'daredevil should be excluded as current season has not fully aired');
+            $this->assertNotSame('succession', $actual, 'succession should be excluded as current season has not fully aired');
+            $this->assertSame('legends of tomorrow', $actual);
+        }
+    }
+
     public function testGetSeriesNotOnRecentlyWatchedListWithNoShows(): void
     {
+        $this->series->expects('getSeriesTitlesWithAvailableCurrentSeason')
+            ->with(Mockery::type(DateTimeInterface::class))
+            ->andReturn([]);
         $this->series->expects('getUniverses')
             ->andReturns([]);
         $this->series->expects('getTitlesRecentlyWatched')
@@ -67,10 +102,26 @@ class NextUpHelperTest extends TestCase
     {
         $this->series->expects('getTitlesWithWatchableEpisodes')
             ->andReturns(['show1', 'show2', 'show3', 'show4', 'show5']);
+        $this->series->expects('getSeriesTitlesWithAvailableCurrentSeason')
+            ->with(Mockery::type(DateTimeInterface::class))
+            ->andReturns(['show1', 'show2', 'show3', 'show4', 'show5']);
         $this->series->expects('getTitlesRecentlyWatched')
             ->andReturns($watched);
 
         $this->assertSame($expected, $this->unit->getSeriesFromRecentlyWatchedList());
+    }
+
+    public function testGetShowFromRecentlyWatchedListExcludesUnairedSeason(): void
+    {
+        $this->series->expects('getTitlesWithWatchableEpisodes')
+            ->andReturns(['show1', 'show2', 'show3']);
+        $this->series->expects('getSeriesTitlesWithAvailableCurrentSeason')
+            ->with(Mockery::type(DateTimeInterface::class))
+            ->andReturns(['show1', 'show3']);
+        $this->series->expects('getTitlesRecentlyWatched')
+            ->andReturns(['show1', 'show2']);
+
+        $this->assertSame('show1', $this->unit->getSeriesFromRecentlyWatchedList());
     }
 
     public static function getRecentlyWatchedDataProvider(): array

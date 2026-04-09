@@ -10,7 +10,7 @@ use App\Document\Episode as EpisodeDocument;
 class Episode
 {
     public function __construct(
-        private DocumentManager $documentManager,
+        private readonly DocumentManager $documentManager,
     ) {
     }
 

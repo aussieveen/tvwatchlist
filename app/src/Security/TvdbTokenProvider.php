@@ -9,7 +9,7 @@ use App\Cache\TvdbApiTokenCache;
 class TvdbTokenProvider
 {
     public function __construct(
-        private TvdbApiTokenCache $tvdbApiTokenCache
+        private readonly TvdbApiTokenCache $tvdbApiTokenCache
     ) {
     }
 

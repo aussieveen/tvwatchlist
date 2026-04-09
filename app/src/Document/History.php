@@ -35,7 +35,7 @@ class History
 
     #[Groups(['history:read','history:write'])]
     #[ODM\Field(type: 'string')]
-    public ?string $universe;
+    public ?string $universe = null;
 
     #[Groups(['history:read','history:write'])]
     #[ODM\Field(type: 'date')]

@@ -81,21 +81,19 @@ class IngestTest extends TestCase
             ->andReturn($episodeRepository);
 
         $this->documentManager->expects('persist')
-            ->with(Mockery::on(function ($episode) {
-                return $episode instanceof EpisodeDocument
-                    && $episode->tvdbEpisodeId === '1'
-                    && $episode->title === 'Test Episode'
-                    && $episode->description === 'Test Overview'
-                    && $episode->season === 1
-                    && $episode->episode === 1
-                    && $episode->seriesTitle === 'Test Series'
-                    && $episode->tvdbSeriesId === '123'
-                    && $episode->poster === 'https://www.thetvdb.com/banners/posters/5b3e0b2d9d0c5.jpg'
-                    && $episode->universe === ''
-                    && $episode->platform === ''
-                    && $episode->status === 'airing'
-                    && $episode->airDate->format('Y-m-d') === '2021-01-01';
-            }));
+            ->with(Mockery::on(fn($episode) => $episode instanceof EpisodeDocument
+                && $episode->tvdbEpisodeId === '1'
+                && $episode->title === 'Test Episode'
+                && $episode->description === 'Test Overview'
+                && $episode->season === 1
+                && $episode->episode === 1
+                && $episode->seriesTitle === 'Test Series'
+                && $episode->tvdbSeriesId === '123'
+                && $episode->poster === 'https://www.thetvdb.com/banners/posters/5b3e0b2d9d0c5.jpg'
+                && $episode->universe === ''
+                && $episode->platform === ''
+                && $episode->status === 'airing'
+                && $episode->airDate->format('Y-m-d') === '2021-01-01'));
 
         $this->documentManager->expects('flush');
 
@@ -135,11 +133,9 @@ class IngestTest extends TestCase
             ->andReturn($episodeRepository);
 
         $this->documentManager->expects('persist')
-            ->with(Mockery::on(function ($episode) {
-                return $episode instanceof EpisodeDocument
-                    && $episode->status === 'finished'
-                    && $episode->airDate->format('Y-m-d') === '2021-01-01';
-            }));
+            ->with(Mockery::on(fn($episode) => $episode instanceof EpisodeDocument
+                && $episode->status === 'finished'
+                && $episode->airDate->format('Y-m-d') === '2021-01-01'));
 
         $this->documentManager->expects('flush');
 
