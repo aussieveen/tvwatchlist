@@ -50,7 +50,7 @@ class TvdbAuthClientTest extends TestCase
     public function testLoginThrowsExceptionOnTransportException(): void
     {
         $this->client->expects('request')
-            ->andThrows($this->createMock(TransportExceptionInterface::class));
+            ->andThrows($this->createStub(TransportExceptionInterface::class));
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Error while logging in');
