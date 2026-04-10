@@ -57,7 +57,7 @@ class TvdbQueryClientTest extends TestCase
             ->andReturns('token');
 
         $this->client->expects('request')
-            ->andThrows($this->createMock(TransportExceptionInterface::class));
+            ->andThrows($this->createStub(TransportExceptionInterface::class));
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Error while searching');
@@ -89,7 +89,7 @@ class TvdbQueryClientTest extends TestCase
             ->andReturns('token');
 
         $this->client->expects('request')
-            ->andThrows($this->createMock(TransportExceptionInterface::class));
+            ->andThrows($this->createStub(TransportExceptionInterface::class));
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Error while getting extended series data');
@@ -121,7 +121,7 @@ class TvdbQueryClientTest extends TestCase
             ->andReturns('token');
 
         $this->client->expects('request')
-            ->andThrows($this->createMock(TransportExceptionInterface::class));
+            ->andThrows($this->createStub(TransportExceptionInterface::class));
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Error while getting extended season data');

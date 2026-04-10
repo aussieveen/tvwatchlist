@@ -57,7 +57,7 @@ class TvdbApiTokenCacheTest extends TestCase
     public function testGetTokenThrowsExceptionOnInvalidArgumentException(): void
     {
         $this->cache->expects('get')
-            ->andThrows($this->createMock(InvalidArgumentException::class));
+            ->andThrows($this->createStub(InvalidArgumentException::class));
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Error getting token from cache');

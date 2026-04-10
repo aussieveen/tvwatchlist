@@ -5,6 +5,8 @@ namespace App\Tests\Repository;
 use App\Document\Episode as EpisodeDocument;
 use App\Document\History;
 use App\Repository\Series;
+use DateTime;
+use DateTimeImmutable;
 use DG\BypassFinals;
 use Doctrine\ODM\MongoDB\Aggregation\Aggregation;
 use Doctrine\ODM\MongoDB\Aggregation\Builder;
@@ -365,15 +367,15 @@ class SeriesTest extends TestCase
         $iteratorMock2 = Mockery::mock(Iterator::class);
         $aggregationMock2->expects('getIterator')->andReturn($iteratorMock2);
 
-        $past = new \DateTime('-1 day');
-        $future = new \DateTime('+1 day');
+        $past = new DateTime('-1 day');
+        $future = new DateTime('+1 day');
         $iteratorMock2->expects('toArray')->andReturn([
             ['_id' => ['seriesTitle' => 'series1', 'season' => 1], 'maxAirDate' => $past],
             ['_id' => ['seriesTitle' => 'series2', 'season' => 2], 'maxAirDate' => $future],
             ['_id' => ['seriesTitle' => 'series3', 'season' => 1], 'maxAirDate' => $past],
         ]);
 
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         $result = $this->unit->getSeriesTitlesWithAvailableCurrentSeason($now);
 
         // series1 season 1 aired in past → available
@@ -408,6 +410,6 @@ class SeriesTest extends TestCase
         $aggregationMock->expects('getIterator')->andReturn($iteratorMock);
         $iteratorMock->expects('toArray')->andReturn([]);
 
-        $this->assertSame([], $this->unit->getSeriesTitlesWithAvailableCurrentSeason(new \DateTimeImmutable()));
+        $this->assertSame([], $this->unit->getSeriesTitlesWithAvailableCurrentSeason(new DateTimeImmutable()));
     }
 }
